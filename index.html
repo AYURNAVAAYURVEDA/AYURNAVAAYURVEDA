@@ -2,92 +2,68 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ayurveda Treatment & Booking</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <meta name="viewport" content="width=1280, height=1024">
+    <title>Ayurveda Medical Center</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
     <style>
         body {
-            font-family: 'Arial', sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #e8f5e9;
-            text-align: center;
-        }
-        header {
-            background: #2e7d32;
-            color: white;
-            padding: 20px;
-            font-size: 28px;
-            font-weight: bold;
+            background-color: lightgreen;
+            background-image: url('https://www.example.com/medical-center.jpg'); /* Replace with actual image URL */
+            background-size: cover;
+            background-position: center;
         }
         .container {
-            margin: 50px auto;
-            width: 80%;
-            background: white;
-            padding: 30px;
-            box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.2);
-            border-radius: 15px;
-        }
-        .stats {
-            font-size: 22px;
-            margin: 20px 0;
-            color: #1b5e20;
-            font-weight: bold;
-        }
-        .booking {
-            padding: 15px 25px;
-            background: #1b5e20;
-            color: white;
-            border: none;
-            cursor: pointer;
-            font-size: 20px;
-            border-radius: 8px;
-            transition: 0.3s;
-        }
-        .booking:hover {
-            background: #388e3c;
-        }
-        footer {
+            text-align: center;
             margin-top: 20px;
-            background: #2e7d32;
-            color: white;
-            padding: 15px;
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-            font-size: 16px;
+        }
+        .header {
+            position: relative;
+            text-align: center;
+            font-size: 60px;
+            font-weight: bold;
+            color: darkgreen;
+            margin-top: 20px;
+        }
+        .header img {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            width: 60px;
+            height: 60px;
+        }
+        #appointment {
+            font-size: 30px;
+            margin: 20px;
+        }
+        button {
+            font-size: 20px;
+            padding: 10px 20px;
+        }
+        .video-container {
+            text-align: center;
+            margin: 40px 0;
         }
     </style>
 </head>
 <body>
-    <header>
-        🌿 Ayurveda Treatment & Online Booking 🌿
-    </header>
     <div class="container">
-        <h1>Welcome to Our Ayurveda Healing Center</h1>
-        <p>Experience the power of natural healing with expert Ayurveda treatments.</p>
-        <div class="stats">
-            <p>Live Patients Under Treatment: <span id="liveCount">10</span></p>
-            <p>Ongoing Booking Number: <span id="bookingNumber">1001</span></p>
+        <div class="header">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/Medical_cross.svg/1024px-Medical_cross.svg.png" alt="Medical Cross">
+            ආයුර්ණවා ආයුර්වේද<br>
+            DOCTOR IS AVAILABLE NOW
         </div>
-        <button class="booking" onclick="bookAppointment()">Book Appointment</button>
+        <div class="video-container">
+            <iframe width="800" height="450" src="https://www.youtube.com/embed?listType=user_uploads&list=UCmiF2GcrQwFeiTdnKJ_023A&hd=1" frameborder="0" allowfullscreen></iframe>
+        </div>
+        <div id="appointment">දැනට ප්‍රතිකාර කරන රෝගියාගේ අංකය: <span id="current-number">0</span></div>
+        <button class="btn btn-dark" onclick="nextAppointment()">Next Appointment</button>
     </div>
-    <footer>
-        &copy; 2025 Ayurveda Healing Center. All rights reserved.
-    </footer>
+    
     <script>
-        function bookAppointment() {
-            let liveCount = parseInt(document.getElementById('liveCount').innerText);
-            let bookingNum = parseInt(document.getElementById('bookingNumber').innerText);
-            
-            liveCount++;
-            bookingNum++;
-            
-            document.getElementById('liveCount').innerText = liveCount;
-            document.getElementById('bookingNumber').innerText = bookingNum;
-            
-            alert("Your appointment is booked! Your booking number is " + bookingNum);
+        let appointmentNumber = 0;
+        function nextAppointment() {
+            appointmentNumber++;
+            document.getElementById('current-number').innerText = appointmentNumber;
         }
     </script>
 </body>
