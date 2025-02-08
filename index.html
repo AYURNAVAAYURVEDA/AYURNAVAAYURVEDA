@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ayurveda Treatment & Booking</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #e8f5e9;
+            text-align: center;
+        }
+        header {
+            background: #2e7d32;
+            color: white;
+            padding: 20px;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .container {
+            margin: 50px auto;
+            width: 80%;
+            background: white;
+            padding: 30px;
+            box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.2);
+            border-radius: 15px;
+        }
+        .stats {
+            font-size: 22px;
+            margin: 20px 0;
+            color: #1b5e20;
+            font-weight: bold;
+        }
+        .booking {
+            padding: 15px 25px;
+            background: #1b5e20;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 20px;
+            border-radius: 8px;
+            transition: 0.3s;
+        }
+        .booking:hover {
+            background: #388e3c;
+        }
+        footer {
+            margin-top: 20px;
+            background: #2e7d32;
+            color: white;
+            padding: 15px;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        🌿 Ayurveda Treatment & Online Booking 🌿
+    </header>
+    <div class="container">
+        <h1>Welcome to Our Ayurveda Healing Center</h1>
+        <p>Experience the power of natural healing with expert Ayurveda treatments.</p>
+        <div class="stats">
+            <p>Live Patients Under Treatment: <span id="liveCount">10</span></p>
+            <p>Ongoing Booking Number: <span id="bookingNumber">1001</span></p>
+        </div>
+        <button class="booking" onclick="bookAppointment()">Book Appointment</button>
+    </div>
+    <footer>
+        &copy; 2025 Ayurveda Healing Center. All rights reserved.
+    </footer>
+    <script>
+        function bookAppointment() {
+            let liveCount = parseInt(document.getElementById('liveCount').innerText);
+            let bookingNum = parseInt(document.getElementById('bookingNumber').innerText);
+            
+            liveCount++;
+            bookingNum++;
+            
+            document.getElementById('liveCount').innerText = liveCount;
+            document.getElementById('bookingNumber').innerText = bookingNum;
+            
+            alert("Your appointment is booked! Your booking number is " + bookingNum);
+        }
+    </script>
+</body>
+</html>
