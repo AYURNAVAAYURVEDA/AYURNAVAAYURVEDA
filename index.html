@@ -17,19 +17,10 @@
             margin-top: 20px;
         }
         .header {
-            position: relative;
-            text-align: center;
             font-size: 60px;
             font-weight: bold;
             color: darkgreen;
             margin-top: 20px;
-        }
-        .header img {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            width: 60px;
-            height: 60px;
         }
         #appointment {
             font-size: 30px;
@@ -48,12 +39,11 @@
 <body>
     <div class="container">
         <div class="header">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/Medical_cross.svg/1024px-Medical_cross.svg.png" alt="Medical Cross">
-            ආයුර්ණවා ආයුර්වේද<br>
-            DOCTOR IS AVAILABLE NOW
+            ආයුර්ණවා ආයුර්වේද Doctor is available now
         </div>
         <div class="video-container">
-            <iframe width="800" height="450" src="https://www.youtube.com/watch?v=ZxzH_L-0WPw&ab_channel=GemunuJayanthaWanninayake" frameborder="0" allowfullscreen></iframe>
+            <input type="file" id="videoInput" accept="video/*">
+            <video id="videoPlayer" width="800" height="450" controls></video>
         </div>
         <div id="appointment">දැනට ප්‍රතිකාර කරන රෝගියාගේ අංකය: <span id="current-number">0</span></div>
         <button class="btn btn-dark" onclick="nextAppointment()">Next Appointment</button>
@@ -65,6 +55,14 @@
             appointmentNumber++;
             document.getElementById('current-number').innerText = appointmentNumber;
         }
+        document.getElementById('videoInput').addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const videoPlayer = document.getElementById('videoPlayer');
+                videoPlayer.src = URL.createObjectURL(file);
+                videoPlayer.play();
+            }
+        });
     </script>
 </body>
 </html>
