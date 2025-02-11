@@ -1,68 +1,93 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-15">
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=1280, height=1024">
-    <title>Ayurveda Medical Center</title>
+    <title>Ayurveda Dispensary</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
     <style>
         body {
-            background-color: lightgreen;
-            background-image: url('https://img.freepik.com/free-vector/abstract-grass_1182-699.jpg?semt=ais_hybrid'); /* Replace with actual image URL */
-            background-size: cover;
-            background-position: center;
+            background-color: green;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
+            color: white;
+            font-size: 40px;
         }
         .container {
             text-align: center;
-            margin-top: 20px;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 20px;
+            border-radius: 10px;
         }
-        .header {
-            font-size: 60px;
+        #doctor-available {
+            font-size: 70px;
+            color: yellow;
             font-weight: bold;
-            color: darkgreen;
-            margin-top: 20px;
         }
-        #appointment {
-            font-size: 30px;
-            margin: 20px;
+        #instruction {
+            font-size: 40px;
+            color: red;
+            font-weight: bold;
+            border: 5px solid white;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        #treatment-number {
+            font-size: 60px;
+            color: red;
+            font-weight: bold;
         }
         button {
-            font-size: 20px;
+            font-size: 30px;
             padding: 10px 20px;
+            margin: 10px;
         }
         .video-container {
+            margin-top: 20px;
             text-align: center;
-            margin: 40px 0;
+        }
+        video {
+            width: 360px;
+            height: 180px;
+            background: black;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="header">
-            ආයුර්ණවා ආයුර්වේද Doctor is available now
-        </div>
+        <div id="instruction">ප්‍රතිකාර සදහා පැමිණි පසු අංකයක් ලබා ගැනීමට සීනුව නාද කරන්න</div>
+        <div id="doctor-available">DOCTOR IS AVAILABLE</div>
+        <h1>Ongoing Treatment Number</h1>
+        <div id="treatment-number">0</div>
+        <button class="btn btn-light" onclick="nextTreatment()">Next</button>
+        <button class="btn btn-danger" onclick="resetTreatment()">Reset</button>
+        
         <div class="video-container">
-            <input type="file" id="videoInput" accept="video/*">
-            <video id="videoPlayer" width="800" height="450" controls></video>
+            <video id="videoPlayer" controls>
+                <source src="" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+            <br>
+            <button class="btn btn-secondary" onclick="loadPlaylist()">Playlist</button>
         </div>
-        <div id="appointment">දැනට ප්‍රතිකාර කරන රෝගියාගේ අංකය: <span id="current-number">0</span></div>
-        <button class="btn btn-dark" onclick="nextAppointment()">Next Appointment</button>
     </div>
     
     <script>
-        let appointmentNumber = 0;
-        function nextAppointment() {
-            appointmentNumber++;
-            document.getElementById('current-number').innerText = appointmentNumber;
+        let treatmentNumber = 0;
+        function nextTreatment() {
+            treatmentNumber++;
+            document.getElementById('treatment-number').innerText = treatmentNumber;
         }
-        document.getElementById('videoInput').addEventListener('change', function(event) {
-            const file = event.target.files[0];
-            if (file) {
-                const videoPlayer = document.getElementById('videoPlayer');
-                videoPlayer.src = URL.createObjectURL(file);
-                videoPlayer.play();
-            }
-        });
+        function resetTreatment() {
+            treatmentNumber = 0;
+            document.getElementById('treatment-number').innerText = treatmentNumber;
+        }
+        function loadPlaylist() {
+            alert("Playlist feature not implemented yet!");
+        }
     </script>
 </body>
 </html>
