@@ -7,7 +7,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
     <style>
         body {
-            background-color: green;
+            background: url('https://source.unsplash.com/1600x900/?ayurveda,medicine') no-repeat center center fixed;
+            background-size: cover;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -18,7 +19,7 @@
         }
         .container {
             text-align: center;
-            background: rgba(0, 0, 0, 0.3);
+            background: rgba(0, 0, 0, 0.6);
             padding: 20px;
             border-radius: 10px;
         }
@@ -34,6 +35,7 @@
             border: 5px solid white;
             padding: 20px;
             margin-bottom: 20px;
+            background: rgba(255, 255, 255, 0.2);
         }
         #treatment-number {
             font-size: 60px;
@@ -41,7 +43,7 @@
             font-weight: bold;
         }
         button {
-            font-size: 30px;
+            font-size: 15px;
             padding: 10px 20px;
             margin: 10px;
         }
@@ -50,9 +52,14 @@
             text-align: center;
         }
         video {
-            width: 360px;
-            height: 180px;
+            width: 80%;
+            max-width: 800px;
+            height: auto;
             background: black;
+        }
+        .choose-video {
+            background-color: purple;
+            color: white;
         }
     </style>
 </head>
@@ -71,7 +78,8 @@
                 Your browser does not support the video tag.
             </video>
             <br>
-            <button class="btn btn-secondary" onclick="loadPlaylist()">Playlist</button>
+            <input type="file" id="videoFile" accept="video/*" style="display: none;" onchange="loadVideo(event)">
+            <button class="btn choose-video" onclick="document.getElementById('videoFile').click();">Choose Video</button>
         </div>
     </div>
     
@@ -85,15 +93,14 @@
             treatmentNumber = 0;
             document.getElementById('treatment-number').innerText = treatmentNumber;
         }
-        function loadPlaylist() {
-            alert("Playlist feature not implemented yet!");
+        function loadVideo(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const videoPlayer = document.getElementById("videoPlayer");
+                videoPlayer.src = URL.createObjectURL(file);
+                videoPlayer.play();
+            }
         }
     </script>
 </body>
 </html>
-<iframe width="560" height="315"
-    src="https://www.youtube.com/embed/videoseries?list=PLZ-XC0FtT1zyArlDegOI9LMu4LPDfjvYs"
-    frameborder="0"
-    allow="autoplay; encrypted-media"
-    allowfullscreen>
-</iframe>
