@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=1280, height=800">
+    <meta name="viewport" content="width=1280, height=900">
     <title>Ayurveda Dispensary</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
     <style>
@@ -86,40 +86,48 @@
         <button class="btn btn-danger" onclick="resetTreatment()">Reset</button>
         
         <div class="video-container">
-            <video id="videoPlayer" controls>
-                <source src="" type="video/mp4">
-                Your browser does not support the video tag.
-            </video>
+            <video id="videoPlayer" controls autoplay></video>
             <br>
-            <input type="file" id="videoFile" accept="video/*" style="display: none;" multiple onchange="loadVideos(event)">
+            <input type="file" id="videoFile" accept="video/*" multiple style="display: none;" onchange="loadVideos(event)">
             <button class="btn choose-video" onclick="document.getElementById('videoFile').click();">Choose Videos</button>
         </div>
     </div>
     
     <script>
         let treatmentNumber = 0;
-        let videoFiles = [];
-        
+        let videoList = [];
+        let currentVideoIndex = 0;
+
         function nextTreatment() {
             treatmentNumber++;
             document.getElementById('treatment-number').innerText = treatmentNumber;
         }
+
         function resetTreatment() {
             treatmentNumber = 0;
             document.getElementById('treatment-number').innerText = treatmentNumber;
         }
+
         function loadVideos(event) {
-            videoFiles = Array.from(event.target.files);
-            playRandomVideo();
-        }
-        function playRandomVideo() {
-            if (videoFiles.length > 0) {
-                const randomIndex = Math.floor(Math.random() * videoFiles.length);
-                const videoPlayer = document.getElementById("videoPlayer");
-                videoPlayer.src = URL.createObjectURL(videoFiles[randomIndex]);
-                videoPlayer.play();
+            videoList = Array.from(event.target.files).map(file => URL.createObjectURL(file));
+            if (videoList.length > 0) {
+                playRandomVideo();
             }
         }
+
+        function playRandomVideo() {
+            if (videoList.length > 0) {
+                currentVideoIndex = Math.floor(Math.random() * videoList.length);
+                const videoPlayer = document.getElementById("videoPlayer");
+                videoPlayer.src = videoList[currentVideoIndex];
+                videoPlayer.play();
+
+                videoPlayer.onended = () => {
+                    playRandomVideo();
+                };
+            }
+        }
+
         function setDoctorStatus(status) {
             document.getElementById('doctor-available').innerText = status;
         }
