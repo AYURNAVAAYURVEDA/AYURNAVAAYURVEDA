@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=1280, height=900">
+    <meta name="viewport" content="width=1280, height=800">
     <title>Ayurveda Dispensary</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
     <style>
@@ -12,7 +12,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
+            height: 80vh; /* Reduced height */
             flex-direction: column;
             color: white;
             font-size: 40px;
@@ -91,13 +91,15 @@
                 Your browser does not support the video tag.
             </video>
             <br>
-            <input type="file" id="videoFile" accept="video/*" style="display: none;" onchange="loadVideo(event)">
-            <button class="btn choose-video" onclick="document.getElementById('videoFile').click();">Choose Video</button>
+            <input type="file" id="videoFile" accept="video/*" style="display: none;" multiple onchange="loadVideos(event)">
+            <button class="btn choose-video" onclick="document.getElementById('videoFile').click();">Choose Videos</button>
         </div>
     </div>
     
     <script>
         let treatmentNumber = 0;
+        let videoFiles = [];
+        
         function nextTreatment() {
             treatmentNumber++;
             document.getElementById('treatment-number').innerText = treatmentNumber;
@@ -106,11 +108,15 @@
             treatmentNumber = 0;
             document.getElementById('treatment-number').innerText = treatmentNumber;
         }
-        function loadVideo(event) {
-            const file = event.target.files[0];
-            if (file) {
+        function loadVideos(event) {
+            videoFiles = Array.from(event.target.files);
+            playRandomVideo();
+        }
+        function playRandomVideo() {
+            if (videoFiles.length > 0) {
+                const randomIndex = Math.floor(Math.random() * videoFiles.length);
                 const videoPlayer = document.getElementById("videoPlayer");
-                videoPlayer.src = URL.createObjectURL(file);
+                videoPlayer.src = URL.createObjectURL(videoFiles[randomIndex]);
                 videoPlayer.play();
             }
         }
