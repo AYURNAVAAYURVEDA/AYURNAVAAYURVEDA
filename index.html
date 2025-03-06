@@ -2,20 +2,17 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=1024, height=1280">
+    <meta name="viewport" content="width=1280, height=900">
     <title>Ayurveda Dispensary</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
     <style>
         body {
-            width: 1280px;
-            height: 1024px;
-            margin: 0;
-            overflow: hidden;
-            background: url('https://cdn.narendramodi.in/cmsuploads/0.73877400_1523541569_attachref.png') no-repeat center center fixed;
+            background: url('https://source.unsplash.com/1600x900/?ayurveda,medicine') no-repeat center center fixed;
             background-size: cover;
             display: flex;
             justify-content: center;
             align-items: center;
+            height: 100vh;
             flex-direction: column;
             color: white;
             font-size: 40px;
@@ -41,13 +38,13 @@
             background: rgba(255, 255, 255, 0.2);
         }
         #treatment-number {
-            font-size: 80px;
+            font-size: 60px;
             color: red;
             font-weight: bold;
         }
         button {
-            font-size: 10px;
-            padding: 5px 10px;
+            font-size: 15px;
+            padding: 10px 20px;
             margin: 10px;
         }
         .video-container {
@@ -55,18 +52,14 @@
             text-align: center;
         }
         video {
-            width: 1024px;
-            height: 576px;
+            width: 80%;
+            max-width: 800px;
+            height: auto;
             background: black;
         }
-        .url-input {
-            width: 300px;
-            font-size: 15px;
-            padding: 5px;
-        }
-        .go-button {
-            font-size: 15px;
-            padding: 5px 10px;
+        .choose-video {
+            background-color: purple;
+            color: white;
         }
     </style>
 </head>
@@ -74,46 +67,39 @@
     <div class="container">
         <div id="instruction">ප්‍රතිකාර සදහා පැමිණි පසු අංකයක් ලබා ගැනීමට සීනුව නාද කරන්න</div>
         <div id="doctor-available">DOCTOR IS AVAILABLE</div>
-        <button class="btn btn-success" onclick="setDoctorStatus('DOCTOR IS AVAILABLE')">Set Available</button>
-        <button class="btn btn-warning" onclick="setDoctorStatus('DOCTOR COMING SOON. PLEASE WAIT')">Set Coming Soon</button>
-        
         <h1>Ongoing Treatment Number</h1>
         <div id="treatment-number">0</div>
         <button class="btn btn-light" onclick="nextTreatment()">Next</button>
         <button class="btn btn-danger" onclick="resetTreatment()">Reset</button>
         
         <div class="video-container">
-            <video id="videoPlayer" controls autoplay></video>
+            <video id="videoPlayer" controls>
+                <source src="" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
             <br>
-            <input type="text" id="videoUrl" class="url-input" placeholder="Enter Video URL">
-            <button class="btn btn-primary go-button" onclick="playVideoFromUrl()">Go</button>
+            <input type="file" id="videoFile" accept="video/*" style="display: none;" onchange="loadVideo(event)">
+            <button class="btn choose-video" onclick="document.getElementById('videoFile').click();">Choose Video</button>
         </div>
     </div>
     
     <script>
         let treatmentNumber = 0;
-        
         function nextTreatment() {
             treatmentNumber++;
             document.getElementById('treatment-number').innerText = treatmentNumber;
         }
-
         function resetTreatment() {
             treatmentNumber = 0;
             document.getElementById('treatment-number').innerText = treatmentNumber;
         }
-
-        function playVideoFromUrl() {
-            const videoUrl = document.getElementById('videoUrl').value;
-            const videoPlayer = document.getElementById('videoPlayer');
-            if (videoUrl) {
-                videoPlayer.src = videoUrl;
+        function loadVideo(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const videoPlayer = document.getElementById("videoPlayer");
+                videoPlayer.src = URL.createObjectURL(file);
                 videoPlayer.play();
             }
-        }
-
-        function setDoctorStatus(status) {
-            document.getElementById('doctor-available').innerText = status;
         }
     </script>
 </body>
