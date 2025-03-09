@@ -2,40 +2,34 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=1280, height=900">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ayurveda Dispensary</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
     <style>
         body {
-            background: url('https://source.unsplash.com/1600x900/?ayurveda,medicine') no-repeat center center fixed;
+            background: url('https://www.lionsroar.com/wp-content/uploads/2023/09/physician-featured.png') no-repeat center center fixed;
             background-size: cover;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
+            min-height: 100vh;
             flex-direction: column;
             color: white;
             font-size: 40px;
+            margin: 0;
         }
         .container {
             text-align: center;
             background: rgba(0, 0, 0, 0.6);
             padding: 20px;
             border-radius: 10px;
+            width: 100%;
+            max-width: 1280px;
         }
         #doctor-available {
             font-size: 70px;
             color: yellow;
             font-weight: bold;
-        }
-        #instruction {
-            font-size: 40px;
-            color: red;
-            font-weight: bold;
-            border: 5px solid white;
-            padding: 20px;
-            margin-bottom: 20px;
-            background: rgba(255, 255, 255, 0.2);
         }
         #treatment-number {
             font-size: 60px;
@@ -52,21 +46,33 @@
             text-align: center;
         }
         video {
-            width: 80%;
-            max-width: 800px;
+            width: 100%;
             height: auto;
+            max-width: 1280px;
             background: black;
         }
         .choose-video {
             background-color: purple;
             color: white;
         }
+        .green-button {
+            background-color: green;
+            color: white;
+            font-size: 12px;
+        }
+        .yellow-button {
+            background-color: yellow;
+            color: black;
+            font-size: 12px;
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <div id="instruction">ප්‍රතිකාර සදහා පැමිණි පසු අංකයක් ලබා ගැනීමට සීනුව නාද කරන්න</div>
         <div id="doctor-available">DOCTOR IS AVAILABLE</div>
+        <button class="btn green-button" onclick="setDoctorStatus('DOCTOR IS AVAILABLE')">Set Available</button>
+        <button class="btn yellow-button" onclick="setDoctorStatus('DOCTOR COMING SOON. PLEASE WAIT')">Set Coming Soon</button>
+        
         <h1>Ongoing Treatment Number</h1>
         <div id="treatment-number">0</div>
         <button class="btn btn-light" onclick="nextTreatment()">Next</button>
@@ -78,28 +84,48 @@
                 Your browser does not support the video tag.
             </video>
             <br>
-            <input type="file" id="videoFile" accept="video/*" style="display: none;" onchange="loadVideo(event)">
-            <button class="btn choose-video" onclick="document.getElementById('videoFile').click();">Choose Video</button>
+            <input type="file" id="videoFile" accept="video/*" multiple style="display: none;" onchange="loadVideos(event)">
+            <button class="btn choose-video" onclick="document.getElementById('videoFile').click();">Choose Videos</button>
         </div>
     </div>
     
     <script>
         let treatmentNumber = 0;
+        let videoList = [];
+        let currentVideoIndex = 0;
+
         function nextTreatment() {
             treatmentNumber++;
             document.getElementById('treatment-number').innerText = treatmentNumber;
         }
+
         function resetTreatment() {
             treatmentNumber = 0;
             document.getElementById('treatment-number').innerText = treatmentNumber;
         }
-        function loadVideo(event) {
-            const file = event.target.files[0];
-            if (file) {
-                const videoPlayer = document.getElementById("videoPlayer");
-                videoPlayer.src = URL.createObjectURL(file);
-                videoPlayer.play();
+
+        function loadVideos(event) {
+            videoList = Array.from(event.target.files).map(file => URL.createObjectURL(file));
+            if (videoList.length > 0) {
+                playRandomVideo();
             }
+        }
+
+        function playRandomVideo() {
+            if (videoList.length > 0) {
+                currentVideoIndex = Math.floor(Math.random() * videoList.length);
+                const videoPlayer = document.getElementById("videoPlayer");
+                videoPlayer.src = videoList[currentVideoIndex];
+                videoPlayer.play();
+
+                videoPlayer.onended = () => {
+                    playRandomVideo();
+                };
+            }
+        }
+
+        function setDoctorStatus(status) {
+            document.getElementById('doctor-available').innerText = status;
         }
     </script>
 </body>
