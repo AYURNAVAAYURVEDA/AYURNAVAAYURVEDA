@@ -9,27 +9,30 @@
         body {
             background: url('https://www.lionsroar.com/wp-content/uploads/2023/09/physician-featured.png') no-repeat center center fixed;
             background-size: cover;
-            margin: 0;
-            padding: 0;
-            overflow: hidden;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
+            flex-direction: column;
             color: white;
             font-size: 40px;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
         }
         .container {
             text-align: center;
             background: rgba(0, 0, 0, 0.6);
             padding: 20px;
             border-radius: 10px;
-            width: 90%;
-            max-width: 1280px;
         }
         #doctor-available {
             font-size: 70px;
             color: yellow;
+            font-weight: bold;
+        }
+        #treatment-number {
+            font-size: 60px;
+            color: red;
             font-weight: bold;
         }
         button {
@@ -42,8 +45,8 @@
             text-align: center;
         }
         video {
-            width: 720px;
-            height: 405px;
+            width: 1280px;
+            height: 720px;
             background: black;
         }
         .choose-video {
@@ -60,10 +63,9 @@
             color: black;
             font-size: 12px;
         }
-        input[type="url"] {
-            width: 300px;
-            font-size: 16px;
-            margin-right: 10px;
+        .video-url-input {
+            width: 300px; /* Decreased input size */
+            font-size: 15px;
         }
     </style>
 </head>
@@ -79,16 +81,16 @@
         <button class="btn btn-danger" onclick="resetTreatment()">Reset</button>
         
         <div class="video-container">
-            <video id="videoPlayer" controls autoplay>
+            <video id="videoPlayer" controls>
                 <source src="" type="video/mp4">
                 Your browser does not support the video tag.
             </video>
             <br>
+            <input type="text" id="videoUrl" class="video-url-input" placeholder="Enter Video URL">
+            <button class="btn btn-primary" onclick="playVideoFromUrl()">GO</button>
+            <br>
             <input type="file" id="videoFile" accept="video/*" multiple style="display: none;" onchange="loadVideos(event)">
             <button class="btn choose-video" onclick="document.getElementById('videoFile').click();">Choose Videos</button>
-            <br>
-            <input type="url" id="videoUrl" placeholder="Enter video URL">
-            <button class="btn btn-primary" onclick="playVideoUrl()">GO</button>
         </div>
     </div>
     
@@ -123,17 +125,17 @@
             }
         }
 
-        function playVideoUrl() {
-            const videoUrl = document.getElementById('videoUrl').value;
-            if (videoUrl) {
-                const videoPlayer = document.getElementById("videoPlayer");
-                videoPlayer.src = videoUrl;
-                videoPlayer.play();
-            }
-        }
-
         function setDoctorStatus(status) {
             document.getElementById('doctor-available').innerText = status;
+        }
+
+        function playVideoFromUrl() {
+            const url = document.getElementById('videoUrl').value;
+            const videoPlayer = document.getElementById("videoPlayer");
+            if (url) {
+                videoPlayer.src = url;
+                videoPlayer.play();
+            }
         }
     </script>
 </body>
