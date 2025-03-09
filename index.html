@@ -45,9 +45,9 @@
             margin-top: 20px;
             text-align: center;
         }
-        video {
+        iframe {
             width: 100%;
-            height: auto;
+            height: 720px;
             max-width: 1280px;
             background: black;
         }
@@ -65,6 +65,11 @@
             color: black;
             font-size: 12px;
         }
+        input[type='text'] {
+            width: 60%;
+            padding: 5px;
+            font-size: 20px;
+        }
     </style>
 </head>
 <body>
@@ -79,10 +84,10 @@
         <button class="btn btn-danger" onclick="resetTreatment()">Reset</button>
         
         <div class="video-container">
-            <video id="videoPlayer" controls>
-                <source src="" type="video/mp4">
-                Your browser does not support the video tag.
-            </video>
+            <iframe id="videoPlayer" src="" frameborder="0" allowfullscreen></iframe>
+            <br>
+            <input type="text" id="youtubeUrl" placeholder="Enter YouTube Video URL">
+            <button class="btn btn-primary" onclick="playYouTubeVideo()">Play YouTube Video</button>
             <br>
             <input type="file" id="videoFile" accept="video/*" multiple style="display: none;" onchange="loadVideos(event)">
             <button class="btn choose-video" onclick="document.getElementById('videoFile').click();">Choose Videos</button>
@@ -116,16 +121,22 @@
                 currentVideoIndex = Math.floor(Math.random() * videoList.length);
                 const videoPlayer = document.getElementById("videoPlayer");
                 videoPlayer.src = videoList[currentVideoIndex];
-                videoPlayer.play();
-
-                videoPlayer.onended = () => {
-                    playRandomVideo();
-                };
             }
         }
 
         function setDoctorStatus(status) {
             document.getElementById('doctor-available').innerText = status;
+        }
+
+        function playYouTubeVideo() {
+            const url = document.getElementById('youtubeUrl').value;
+            const videoPlayer = document.getElementById("videoPlayer");
+            const videoId = url.split("v=")[1]?.split('&')[0];
+            if (videoId) {
+                videoPlayer.src = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
+            } else {
+                alert('Invalid YouTube URL');
+            }
         }
     </script>
 </body>
