@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=1280, height=1024">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ayurveda Dispensary</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
     <style>
@@ -28,15 +28,6 @@
             color: yellow;
             font-weight: bold;
         }
-        #instruction {
-            font-size: 40px;
-            color: red;
-            font-weight: bold;
-            border: 5px solid white;
-            padding: 20px;
-            margin-bottom: 20px;
-            background: rgba(255, 255, 255, 0.2);
-        }
         #treatment-number {
             font-size: 60px;
             color: red;
@@ -47,37 +38,23 @@
             padding: 10px 20px;
             margin: 10px;
         }
-        .video-container {
-            margin-top: 20px;
-            text-align: center;
-        }
         video {
             width: 80%;
-            max-width: auto;
-            height: auto;
+            max-width: 640px;
+            height: 512px;
             background: black;
         }
-        .choose-video {
-            background-color: purple;
-            color: white;
-        }
-        .green-button {
-            background-color: green;
-            color: white;
-            font-size: 12px;
-        }
-        .yellow-button {
-            background-color: yellow;
-            color: black;
-            font-size: 12px;
+        .input-url {
+            width: 300px;
+            margin: 10px;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <div id="doctor-available">DOCTOR IS AVAILABLE</div>
-        <button class="btn green-button" onclick="setDoctorStatus('DOCTOR IS AVAILABLE')">Set Available</button>
-        <button class="btn yellow-button" onclick="setDoctorStatus('DOCTOR COMING SOON. PLEASE WAIT')">Set Coming Soon</button>
+        <button class="btn btn-success" onclick="setDoctorStatus('DOCTOR IS AVAILABLE')">Set Available</button>
+        <button class="btn btn-warning" onclick="setDoctorStatus('DOCTOR COMING SOON. PLEASE WAIT')">Set Coming Soon</button>
         
         <h1>Ongoing Treatment Number</h1>
         <div id="treatment-number">0</div>
@@ -85,36 +62,62 @@
         <button class="btn btn-danger" onclick="resetTreatment()">Reset</button>
         
         <div class="video-container">
-            <video id="videoPlayer" controls>
-                <source src="" type="video/mp4">
-                Your browser does not support the video tag.
-            </video>
+            <video id="videoPlayer" controls autoplay></video>
             <br>
-            <input type="file" id="videoFile" accept="video/*" style="display: none;" onchange="loadVideo(event)">
-            <button class="btn choose-video" onclick="document.getElementById('videoFile').click();">Choose Video</button>
+            <input type="file" id="videoFile" accept="video/*" multiple style="display: none;" onchange="loadVideos(event)">
+            <button class="btn btn-primary" onclick="document.getElementById('videoFile').click();">Choose Videos</button>
+            <br>
+            <input type="text" id="videoUrl" class="input-url" placeholder="Enter video URL" onkeypress="handleUrlInput(event)">
+            <button class="btn btn-info" onclick="playVideoFromUrl()">Add URL</button>
         </div>
     </div>
     
     <script>
         let treatmentNumber = 0;
+        let videoList = [];
+        let currentVideoIndex = 0;
+
         function nextTreatment() {
             treatmentNumber++;
             document.getElementById('treatment-number').innerText = treatmentNumber;
         }
+
         function resetTreatment() {
             treatmentNumber = 0;
             document.getElementById('treatment-number').innerText = treatmentNumber;
         }
-        function loadVideo(event) {
-            const file = event.target.files[0];
-            if (file) {
+
+        function loadVideos(event) {
+            videoList = Array.from(event.target.files).map(file => URL.createObjectURL(file));
+            if (videoList.length > 0) {
+                playRandomVideo();
+            }
+        }
+
+        function playRandomVideo() {
+            if (videoList.length > 0) {
+                currentVideoIndex = Math.floor(Math.random() * videoList.length);
                 const videoPlayer = document.getElementById("videoPlayer");
-                videoPlayer.src = URL.createObjectURL(file);
+                videoPlayer.src = videoList[currentVideoIndex];
                 videoPlayer.play();
             }
         }
+
         function setDoctorStatus(status) {
             document.getElementById('doctor-available').innerText = status;
+        }
+
+        function handleUrlInput(event) {
+            if (event.key === 'Enter') {
+                playVideoFromUrl();
+            }
+        }
+
+        function playVideoFromUrl() {
+            const url = document.getElementById('videoUrl').value;
+            const videoPlayer = document.getElementById('videoPlayer');
+            videoPlayer.src = url;
+            videoPlayer.play();
         }
     </script>
 </body>
