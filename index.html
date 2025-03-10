@@ -51,7 +51,7 @@
             max-width: 1280px;
             background: black;
         }
-        .choose-video {
+        .choose-video, .youtube-button {
             background-color: purple;
             color: white;
         }
@@ -64,6 +64,11 @@
             background-color: yellow;
             color: black;
             font-size: 12px;
+        }
+        input[type='text'] {
+            width: auto;
+            padding: 5px;
+            font-size: 15px;
         }
     </style>
 </head>
@@ -83,6 +88,9 @@
             <br>
             <input type="file" id="videoFile" accept="video/*" multiple style="display: none;" onchange="loadVideos(event)">
             <button class="btn choose-video" onclick="document.getElementById('videoFile').click();">Choose Videos</button>
+            
+            <input type="text" id="youtubeUrl" placeholder="YouTube URL" style="width: auto;">
+            <button class="btn youtube-button" onclick="playYouTubeVideo()">Play</button>
         </div>
     </div>
     
@@ -120,6 +128,16 @@
             document.getElementById('doctor-available').innerText = status;
         }
 
+        function playYouTubeVideo() {
+            const url = document.getElementById('youtubeUrl').value;
+            const videoPlayer = document.getElementById("videoPlayer");
+            const videoId = url.split("v=")[1]?.split('&')[0];
+            if (videoId) {
+                videoPlayer.src = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
+            } else {
+                alert('Invalid YouTube URL');
+            }
+        }
     </script>
 </body>
 </html>
