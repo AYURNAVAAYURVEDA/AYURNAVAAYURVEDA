@@ -32,7 +32,7 @@
             font-weight: bold;
         }
         #treatment-number {
-            font-size: 60px;
+            font-size: 80px;
             color: red;
             font-weight: bold;
         }
@@ -51,7 +51,7 @@
             max-width: 1280px;
             background: black;
         }
-        .choose-video, .youtube-button {
+        .choose-video {
             background-color: purple;
             color: white;
         }
@@ -66,9 +66,21 @@
             font-size: 12px;
         }
         input[type='text'] {
-            width: auto;
+            width: 200px;
             padding: 5px;
             font-size: 15px;
+        }
+        .treatment-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+        }
+        .url-video-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
         }
     </style>
 </head>
@@ -78,19 +90,22 @@
         <button class="btn green-button" onclick="setDoctorStatus('DOCTOR IS AVAILABLE')">Set Available</button>
         <button class="btn yellow-button" onclick="setDoctorStatus('DOCTOR COMING SOON. PLEASE WAIT')">Set Coming Soon</button>
         
-        <h1>Ongoing Treatment Number</h1>
-        <div id="treatment-number">0</div>
+        <div class="treatment-container">
+            <h1>Ongoing Treatment Number</h1>
+            <div id="treatment-number">0</div>
+        </div>
         <button class="btn btn-light" onclick="nextTreatment()">Next</button>
         <button class="btn btn-danger" onclick="resetTreatment()">Reset</button>
         
         <div class="video-container">
             <iframe id="videoPlayer" src="" frameborder="0" allowfullscreen></iframe>
             <br>
-            <input type="file" id="videoFile" accept="video/*" multiple style="display: none;" onchange="loadVideos(event)">
-            <button class="btn choose-video" onclick="document.getElementById('videoFile').click();">Choose Videos</button>
-            
-            <input type="text" id="youtubeUrl" placeholder="YouTube URL" style="width: auto;">
-            <button class="btn youtube-button" onclick="playYouTubeVideo()">Play</button>
+            <div class="url-video-container">
+                <input type="text" id="youtubeUrl" placeholder="YouTube Video URL">
+                <button class="btn btn-primary" onclick="playYouTubeVideo()">Play Video</button>
+                <input type="file" id="videoFile" accept="video/*" multiple style="display: none;" onchange="loadVideos(event)">
+                <button class="btn choose-video" onclick="document.getElementById('videoFile').click();">Choose Videos</button>
+            </div>
         </div>
     </div>
     
