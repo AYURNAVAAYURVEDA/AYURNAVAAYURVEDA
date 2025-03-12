@@ -25,6 +25,7 @@
             border-radius: 10px;
             width: 100%;
             max-width: 1280px;
+            position: relative;
         }
         #doctor-available {
             font-size: 70px;
@@ -37,9 +38,9 @@
             font-weight: bold;
         }
         button {
-            font-size: 15px;
-            padding: 10px 20px;
-            margin: 10px;
+            font-size: 12px;
+            padding: 5px 10px;
+            margin: 5px;
         }
         .video-container {
             margin-top: 20px;
@@ -47,7 +48,7 @@
         }
         iframe {
             width: 100%;
-            height: 480px;
+            height: 720px;
             max-width: 1280px;
             background: black;
         }
@@ -126,16 +127,18 @@
 
         function loadVideos(event) {
             videoList = Array.from(event.target.files).map(file => URL.createObjectURL(file));
+            currentVideoIndex = 0;
             if (videoList.length > 0) {
-                playRandomVideo();
+                playNextVideo();
             }
         }
 
-        function playRandomVideo() {
+        function playNextVideo() {
             if (videoList.length > 0) {
-                currentVideoIndex = Math.floor(Math.random() * videoList.length);
                 const videoPlayer = document.getElementById("videoPlayer");
                 videoPlayer.src = videoList[currentVideoIndex];
+                currentVideoIndex = (currentVideoIndex + 1) % videoList.length;
+                videoPlayer.onended = playNextVideo;
             }
         }
 
@@ -149,6 +152,7 @@
             const videoId = url.split("v=")[1]?.split('&')[0];
             if (videoId) {
                 videoPlayer.src = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
+                videoPlayer.onended = playNextVideo;
             } else {
                 alert('Invalid YouTube URL');
             }
