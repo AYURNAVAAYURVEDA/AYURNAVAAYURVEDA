@@ -38,7 +38,7 @@
             margin: 5px;
         }
         .video-container {
-            margin-top: 20px;
+            margin-top: 10px; /* Reduced margin between video containers */
             text-align: center;
         }
         iframe {
@@ -84,6 +84,13 @@
             gap: 10px;
             margin-top: 20px;
         }
+        /* New container for "Choose Videos" button of second player */
+        .choose-video-container {
+            position: absolute;
+            bottom: 10px;
+            width: 100%;
+            text-align: center;
+        }
     </style>
 </head>
 <body>
@@ -115,7 +122,10 @@
                 <input type="text" id="youtubeUrl" placeholder="YouTube Video URL">
                 <button class="btn btn-primary" onclick="playYouTubeVideo()">Play Video</button>
             </div>
-            <!-- Choose Videos Button for Second Video Player (Directly Below Play Video Button) -->
+        </div>
+
+        <!-- Choose Videos Button for Second Video Player (Moved to Bottom) -->
+        <div class="choose-video-container">
             <div class="video-choose-buttons">
                 <input type="file" id="videoFile" accept="video/*" multiple style="display: none;" onchange="loadVideos(event)">
                 <button class="btn choose-video" onclick="document.getElementById('videoFile').click();">Choose Videos</button>
@@ -141,50 +151,4 @@
         }
 
         function loadVideos(event) {
-            videoList = Array.from(event.target.files).map(file => URL.createObjectURL(file));
-            currentVideoIndex = 0;
-            if (videoList.length > 0) {
-                playNextVideo();
-            }
-        }
-
-        function loadVideos16x9(event) {
-            videoList16x9 = Array.from(event.target.files).map(file => URL.createObjectURL(file));
-            currentVideoIndex16x9 = 0;
-            if (videoList16x9.length > 0) {
-                playNextVideo16x9();
-            }
-        }
-
-        function playNextVideo() {
-            if (videoList.length > 0) {
-                const videoPlayer = document.getElementById("videoPlayer");
-                videoPlayer.src = videoList[currentVideoIndex];
-                currentVideoIndex = (currentVideoIndex + 1) % videoList.length;
-                videoPlayer.onended = playNextVideo;
-            }
-        }
-
-        function playNextVideo16x9() {
-            if (videoList16x9.length > 0) {
-                const videoPlayer16x9 = document.getElementById("videoPlayer16x9");
-                videoPlayer16x9.src = videoList16x9[currentVideoIndex16x9];
-                currentVideoIndex16x9 = (currentVideoIndex16x9 + 1) % videoList16x9.length;
-                videoPlayer16x9.onended = playNextVideo16x9;
-            }
-        }
-
-        function playYouTubeVideo() {
-            const url = document.getElementById('youtubeUrl').value;
-            const videoPlayer = document.getElementById("videoPlayer");
-            const videoId = url.split("v=")[1]?.split('&')[0];
-            if (videoId) {
-                videoPlayer.src = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
-                videoPlayer.onended = playNextVideo;
-            } else {
-                alert('Invalid YouTube URL');
-            }
-        }
-    </script>
-</body>
-</html>
+            videoList = A
