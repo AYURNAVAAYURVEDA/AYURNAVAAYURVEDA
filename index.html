@@ -47,13 +47,22 @@
             text-align: center;
         }
         iframe {
-            width: 100%;
-            height: 700px;
-            max-width: 1200px;
             background: black;
+        }
+        #videoPlayer16x9 {
+            width: 1280px;
+            height: 300px;
+        }
+        #videoPlayer {
+            width: 1280px;
+            height: 720px;
         }
         .choose-video {
             background-color: purple;
+            color: white;
+        }
+        .choose-video-second {
+            background-color: indigo;
             color: white;
         }
         .green-button {
@@ -99,6 +108,13 @@
         <button class="btn btn-danger" onclick="resetTreatment()">Reset</button>
         
         <div class="video-container">
+            <iframe id="videoPlayer16x9" src="" frameborder="0" allowfullscreen></iframe>
+            <br>
+            <input type="file" id="videoFile16x9" accept="video/*" multiple style="display: none;" onchange="loadVideos16x9(event)">
+            <button class="btn choose-video-second" onclick="document.getElementById('videoFile16x9').click();">Choose Videos</button>
+        </div>
+        
+        <div class="video-container">
             <iframe id="videoPlayer" src="" frameborder="0" allowfullscreen></iframe>
             <br>
             <div class="url-video-container">
@@ -114,6 +130,8 @@
         let treatmentNumber = 0;
         let videoList = [];
         let currentVideoIndex = 0;
+        let videoList16x9 = [];
+        let currentVideoIndex16x9 = 0;
 
         function nextTreatment() {
             treatmentNumber++;
@@ -133,12 +151,29 @@
             }
         }
 
+        function loadVideos16x9(event) {
+            videoList16x9 = Array.from(event.target.files).map(file => URL.createObjectURL(file));
+            currentVideoIndex16x9 = 0;
+            if (videoList16x9.length > 0) {
+                playNextVideo16x9();
+            }
+        }
+
         function playNextVideo() {
             if (videoList.length > 0) {
                 const videoPlayer = document.getElementById("videoPlayer");
                 videoPlayer.src = videoList[currentVideoIndex];
                 currentVideoIndex = (currentVideoIndex + 1) % videoList.length;
                 videoPlayer.onended = playNextVideo;
+            }
+        }
+
+        function playNextVideo16x9() {
+            if (videoList16x9.length > 0) {
+                const videoPlayer16x9 = document.getElementById("videoPlayer16x9");
+                videoPlayer16x9.src = videoList16x9[currentVideoIndex16x9];
+                currentVideoIndex16x9 = (currentVideoIndex16x9 + 1) % videoList16x9.length;
+                videoPlayer16x9.onended = playNextVideo16x9;
             }
         }
 
