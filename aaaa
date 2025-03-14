@@ -25,6 +25,7 @@
             border-radius: 10px;
             width: 100%;
             max-width: 1280px;
+            position: relative;
         }
         #doctor-available {
             font-size: 70px;
@@ -32,23 +33,23 @@
             font-weight: bold;
         }
         #treatment-number {
-            font-size: 60px;
+            font-size: 80px;
             color: red;
             font-weight: bold;
         }
         button {
-            font-size: 15px;
-            padding: 10px 20px;
-            margin: 10px;
+            font-size: 12px;
+            padding: 5px 10px;
+            margin: 5px;
         }
         .video-container {
             margin-top: 20px;
             text-align: center;
         }
-        video {
+        iframe {
             width: 100%;
-            height: auto;
-            max-width: 1280px;
+            height: 700px;
+            max-width: 1200px;
             background: black;
         }
         .choose-video {
@@ -65,6 +66,23 @@
             color: black;
             font-size: 12px;
         }
+        input[type='text'] {
+            width: 200px;
+            padding: 5px;
+            font-size: 15px;
+        }
+        .treatment-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+        }
+        .url-video-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
     </style>
 </head>
 <body>
@@ -73,19 +91,22 @@
         <button class="btn green-button" onclick="setDoctorStatus('DOCTOR IS AVAILABLE')">Set Available</button>
         <button class="btn yellow-button" onclick="setDoctorStatus('DOCTOR COMING SOON. PLEASE WAIT')">Set Coming Soon</button>
         
-        <h1>Ongoing Treatment Number</h1>
-        <div id="treatment-number">0</div>
+        <div class="treatment-container">
+            <h1>Ongoing Treatment Number</h1>
+            <div id="treatment-number">0</div>
+        </div>
         <button class="btn btn-light" onclick="nextTreatment()">Next</button>
         <button class="btn btn-danger" onclick="resetTreatment()">Reset</button>
         
         <div class="video-container">
-            <video id="videoPlayer" controls>
-                <source src="" type="video/mp4">
-                Your browser does not support the video tag.
-            </video>
+            <iframe id="videoPlayer" src="" frameborder="0" allowfullscreen></iframe>
             <br>
-            <input type="file" id="videoFile" accept="video/*" multiple style="display: none;" onchange="loadVideos(event)">
-            <button class="btn choose-video" onclick="document.getElementById('videoFile').click();">Choose Videos</button>
+            <div class="url-video-container">
+                <input type="text" id="youtubeUrl" placeholder="YouTube Video URL">
+                <button class="btn btn-primary" onclick="playYouTubeVideo()">Play Video</button>
+                <input type="file" id="videoFile" accept="video/*" multiple style="display: none;" onchange="loadVideos(event)">
+                <button class="btn choose-video" onclick="document.getElementById('videoFile').click();">Choose Videos</button>
+            </div>
         </div>
     </div>
     
@@ -106,26 +127,35 @@
 
         function loadVideos(event) {
             videoList = Array.from(event.target.files).map(file => URL.createObjectURL(file));
+            currentVideoIndex = 0;
             if (videoList.length > 0) {
-                playRandomVideo();
+                playNextVideo();
             }
         }
 
-        function playRandomVideo() {
+        function playNextVideo() {
             if (videoList.length > 0) {
-                currentVideoIndex = Math.floor(Math.random() * videoList.length);
                 const videoPlayer = document.getElementById("videoPlayer");
                 videoPlayer.src = videoList[currentVideoIndex];
-                videoPlayer.play();
-
-                videoPlayer.onended = () => {
-                    playRandomVideo();
-                };
+                currentVideoIndex = (currentVideoIndex + 1) % videoList.length;
+                videoPlayer.onended = playNextVideo;
             }
         }
 
         function setDoctorStatus(status) {
             document.getElementById('doctor-available').innerText = status;
+        }
+
+        function playYouTubeVideo() {
+            const url = document.getElementById('youtubeUrl').value;
+            const videoPlayer = document.getElementById("videoPlayer");
+            const videoId = url.split("v=")[1]?.split('&')[0];
+            if (videoId) {
+                videoPlayer.src = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
+                videoPlayer.onended = playNextVideo;
+            } else {
+                alert('Invalid YouTube URL');
+            }
         }
     </script>
 </body>
