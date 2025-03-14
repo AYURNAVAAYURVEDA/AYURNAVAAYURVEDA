@@ -27,11 +27,6 @@
             max-width: 1280px;
             position: relative;
         }
-        #doctor-available {
-            font-size: 70px;
-            color: yellow;
-            font-weight: bold;
-        }
         #treatment-number {
             font-size: 80px;
             color: red;
@@ -65,16 +60,6 @@
             background-color: indigo;
             color: white;
         }
-        .green-button {
-            background-color: green;
-            color: white;
-            font-size: 12px;
-        }
-        .yellow-button {
-            background-color: yellow;
-            color: black;
-            font-size: 12px;
-        }
         input[type='text'] {
             width: 200px;
             padding: 5px;
@@ -91,15 +76,18 @@
             justify-content: center;
             align-items: center;
             gap: 10px;
+            margin-top: 10px;
+        }
+        .video-choose-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 20px;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <div id="doctor-available">DOCTOR IS AVAILABLE</div>
-        <button class="btn green-button" onclick="setDoctorStatus('DOCTOR IS AVAILABLE')">Set Available</button>
-        <button class="btn yellow-button" onclick="setDoctorStatus('DOCTOR COMING SOON. PLEASE WAIT')">Set Coming Soon</button>
-        
         <div class="treatment-container">
             <h1>Ongoing Treatment Number</h1>
             <div id="treatment-number">0</div>
@@ -107,19 +95,28 @@
         <button class="btn btn-light" onclick="nextTreatment()">Next</button>
         <button class="btn btn-danger" onclick="resetTreatment()">Reset</button>
         
+        <!-- FIRST VIDEO PLAYER (16:9) -->
         <div class="video-container">
             <iframe id="videoPlayer16x9" src="" frameborder="0" allowfullscreen></iframe>
             <br>
-            <input type="file" id="videoFile16x9" accept="video/*" multiple style="display: none;" onchange="loadVideos16x9(event)">
-            <button class="btn choose-video-second" onclick="document.getElementById('videoFile16x9').click();">Choose Videos</button>
+            <!-- Choose Videos Button for First Video Player -->
+            <div class="video-choose-buttons">
+                <input type="file" id="videoFile16x9" accept="video/*" multiple style="display: none;" onchange="loadVideos16x9(event)">
+                <button class="btn choose-video-second" onclick="document.getElementById('videoFile16x9').click();">Choose Videos</button>
+            </div>
         </div>
         
+        <!-- SECOND VIDEO PLAYER (YouTube or File) -->
         <div class="video-container">
             <iframe id="videoPlayer" src="" frameborder="0" allowfullscreen></iframe>
             <br>
+            <!-- YouTube Input and Play Button -->
             <div class="url-video-container">
                 <input type="text" id="youtubeUrl" placeholder="YouTube Video URL">
                 <button class="btn btn-primary" onclick="playYouTubeVideo()">Play Video</button>
+            </div>
+            <!-- Choose Videos Button for Second Video Player (Directly Below Play Video Button) -->
+            <div class="video-choose-buttons">
                 <input type="file" id="videoFile" accept="video/*" multiple style="display: none;" onchange="loadVideos(event)">
                 <button class="btn choose-video" onclick="document.getElementById('videoFile').click();">Choose Videos</button>
             </div>
@@ -175,10 +172,6 @@
                 currentVideoIndex16x9 = (currentVideoIndex16x9 + 1) % videoList16x9.length;
                 videoPlayer16x9.onended = playNextVideo16x9;
             }
-        }
-
-        function setDoctorStatus(status) {
-            document.getElementById('doctor-available').innerText = status;
         }
 
         function playYouTubeVideo() {
