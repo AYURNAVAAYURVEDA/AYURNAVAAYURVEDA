@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=1280, height=900">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ayurveda Dispensary</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
     <style>
@@ -15,75 +15,65 @@
             height: 100vh;
             flex-direction: column;
             color: white;
-            font-size: 40px;
+            text-align: center;
         }
         .container {
-            text-align: center;
-            background: rgba(0, 0, 0, 0.6);
+            background: rgba(0, 0, 0, 0.7);
             padding: 20px;
             border-radius: 10px;
         }
         #doctor-available {
-            font-size: 70px;
+            font-size: 60px;
             color: yellow;
             font-weight: bold;
+            margin-bottom: 20px;
+            aria-live: polite;
         }
         #instruction {
-            font-size: 40px;
-            color: red;
+            font-size: 30px;
+            color: #ffcc00;
             font-weight: bold;
-            border: 5px solid white;
-            padding: 20px;
-            margin-bottom: 20px;
+            border: 3px solid white;
+            padding: 15px;
             background: rgba(255, 255, 255, 0.2);
+            margin-bottom: 20px;
         }
         #treatment-number {
-            font-size: 60px;
+            font-size: 50px;
             color: red;
             font-weight: bold;
+            aria-live: polite;
         }
         button {
-            font-size: 15px;
+            font-size: 18px;
             padding: 10px 20px;
             margin: 10px;
         }
         .video-container {
             margin-top: 20px;
-            text-align: center;
         }
         video {
-            width: 80%;
-            max-width: 800px;
-            height: auto;
+            width: 1920px;
+            height: 1080px;
             background: black;
         }
         .choose-video {
             background-color: purple;
             color: white;
         }
-        .green-button {
-            background-color: green;
-            color: white;
-            font-size: 12px;
-        }
-        .yellow-button {
-            background-color: yellow;
-            color: black;
-            font-size: 12px;
-        }
     </style>
 </head>
 <body>
     <div class="container">
-        <div id="instruction">ප්‍රතිකාර සදහා පැමිණි පසු අංකයක් ලබා ගැනීමට සීනුව නාද කරන්න</div>
+        <div id="instruction">Press the bell to get a number after arriving for treatment</div>
         <div id="doctor-available">DOCTOR IS AVAILABLE</div>
-        <button class="btn green-button" onclick="setDoctorStatus('DOCTOR IS AVAILABLE')">Set Available</button>
-        <button class="btn yellow-button" onclick="setDoctorStatus('DOCTOR COMING SOON. PLEASE WAIT')">Set Coming Soon</button>
+        <button class="btn btn-success" onclick="setDoctorStatus('DOCTOR IS AVAILABLE')">Set Available</button>
+        <button class="btn btn-warning" onclick="setDoctorStatus('DOCTOR COMING SOON. PLEASE WAIT')">Set Coming Soon</button>
         
         <h1>Ongoing Treatment Number</h1>
         <div id="treatment-number">0</div>
-        <button class="btn btn-light" onclick="nextTreatment()">Next</button>
-        <button class="btn btn-danger" onclick="resetTreatment()">Reset</button>
+        <button class="btn btn-primary" onclick="nextTreatment()">Next</button>
+        <button class="btn btn-danger" onclick="confirmReset()">Reset</button>
         
         <div class="video-container">
             <video id="videoPlayer" controls>
@@ -97,15 +87,23 @@
     </div>
     
     <script>
-        let treatmentNumber = 0;
+        let treatmentNumber = localStorage.getItem('treatmentNumber') ? parseInt(localStorage.getItem('treatmentNumber')) : 0;
+        document.getElementById('treatment-number').innerText = treatmentNumber;
+        
         function nextTreatment() {
             treatmentNumber++;
             document.getElementById('treatment-number').innerText = treatmentNumber;
+            localStorage.setItem('treatmentNumber', treatmentNumber);
         }
-        function resetTreatment() {
-            treatmentNumber = 0;
-            document.getElementById('treatment-number').innerText = treatmentNumber;
+        
+        function confirmReset() {
+            if (confirm('Are you sure you want to reset the treatment number?')) {
+                treatmentNumber = 0;
+                document.getElementById('treatment-number').innerText = treatmentNumber;
+                localStorage.setItem('treatmentNumber', treatmentNumber);
+            }
         }
+        
         function loadVideo(event) {
             const file = event.target.files[0];
             if (file) {
@@ -114,10 +112,10 @@
                 videoPlayer.play();
             }
         }
+        
         function setDoctorStatus(status) {
             document.getElementById('doctor-available').innerText = status;
         }
     </script>
 </body>
 </html>
-
