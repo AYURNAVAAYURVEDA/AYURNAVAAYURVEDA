@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=1280, height=1024">
     <title>Ayurveda Dispensary</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
     <style>
@@ -12,7 +12,8 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
+            width: 1280px;
+            height: 1024px;
             flex-direction: column;
             color: white;
             text-align: center;
@@ -29,15 +30,6 @@
             margin-bottom: 20px;
             aria-live: polite;
         }
-        #instruction {
-            font-size: 30px;
-            color: #ffcc00;
-            font-weight: bold;
-            border: 3px solid white;
-            padding: 15px;
-            background: rgba(255, 255, 255, 0.2);
-            margin-bottom: 20px;
-        }
         #treatment-number {
             font-size: 50px;
             color: red;
@@ -53,8 +45,8 @@
             margin-top: 20px;
         }
         video {
-            width: 1920px;
-            height: 1080px;
+            width: 640px;
+            height: 480px;
             background: black;
         }
         .choose-video {
@@ -65,7 +57,6 @@
 </head>
 <body>
     <div class="container">
-        <div id="instruction">Press the bell to get a number after arriving for treatment</div>
         <div id="doctor-available">DOCTOR IS AVAILABLE</div>
         <button class="btn btn-success" onclick="setDoctorStatus('DOCTOR IS AVAILABLE')">Set Available</button>
         <button class="btn btn-warning" onclick="setDoctorStatus('DOCTOR COMING SOON. PLEASE WAIT')">Set Coming Soon</button>
