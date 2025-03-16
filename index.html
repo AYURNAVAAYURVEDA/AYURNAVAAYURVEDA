@@ -3,110 +3,57 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=1280, height=1024">
-    <title>Ayurveda Dispensary</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+    <title>Video Player Page</title>
     <style>
         body {
-            background: url('https://source.unsplash.com/1600x900/?ayurveda,medicine') no-repeat center center fixed;
-            background-size: cover;
-            display: flex;
-            justify-content: center;
-            align-items: center;
             width: 1280px;
             height: 1024px;
+            margin: 0;
+            display: flex;
             flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background-color: #222;
             color: white;
-            text-align: center;
-        }
-        .container {
-            background: rgba(0, 0, 0, 0.7);
-            padding: 20px;
-            border-radius: 10px;
-        }
-        #doctor-available {
-            font-size: 60px;
-            color: yellow;
-            font-weight: bold;
-            margin-bottom: 20px;
-            aria-live: polite;
-        }
-        #treatment-number {
-            font-size: 50px;
-            color: red;
-            font-weight: bold;
-            aria-live: polite;
-        }
-        button {
-            font-size: 18px;
-            padding: 10px 20px;
-            margin: 10px;
+            overflow: hidden;
         }
         .video-container {
-            margin-top: 20px;
+            text-align: center;
+            margin-bottom: 20px;
         }
         video {
-            width: 640px;
-            height: 480px;
             background: black;
         }
-        .choose-video {
-            background-color: purple;
-            color: white;
+        .video-title {
+            font-size: 20px;
+            margin-bottom: 5px;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div id="doctor-available">DOCTOR IS AVAILABLE</div>
-        <button class="btn btn-success" onclick="setDoctorStatus('DOCTOR IS AVAILABLE')">Set Available</button>
-        <button class="btn btn-warning" onclick="setDoctorStatus('DOCTOR COMING SOON. PLEASE WAIT')">Set Coming Soon</button>
-        
-        <h1>Ongoing Treatment Number</h1>
-        <div id="treatment-number">0</div>
-        <button class="btn btn-primary" onclick="nextTreatment()">Next</button>
-        <button class="btn btn-danger" onclick="confirmReset()">Reset</button>
-        
-        <div class="video-container">
-            <video id="videoPlayer" controls>
-                <source src="" type="video/mp4">
-                Your browser does not support the video tag.
-            </video>
-            <br>
-            <input type="file" id="videoFile" accept="video/*" style="display: none;" onchange="loadVideo(event)">
-            <button class="btn choose-video" onclick="document.getElementById('videoFile').click();">Choose Video</button>
-        </div>
+    <div class="video-container">
+        <div class="video-title">Upper Video Player</div>
+        <video width="1024" height="240" controls>
+            <source src="" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
     </div>
     
-    <script>
-        let treatmentNumber = localStorage.getItem('treatmentNumber') ? parseInt(localStorage.getItem('treatmentNumber')) : 0;
-        document.getElementById('treatment-number').innerText = treatmentNumber;
-        
-        function nextTreatment() {
-            treatmentNumber++;
-            document.getElementById('treatment-number').innerText = treatmentNumber;
-            localStorage.setItem('treatmentNumber', treatmentNumber);
-        }
-        
-        function confirmReset() {
-            if (confirm('Are you sure you want to reset the treatment number?')) {
-                treatmentNumber = 0;
-                document.getElementById('treatment-number').innerText = treatmentNumber;
-                localStorage.setItem('treatmentNumber', treatmentNumber);
-            }
-        }
-        
-        function loadVideo(event) {
-            const file = event.target.files[0];
-            if (file) {
-                const videoPlayer = document.getElementById("videoPlayer");
-                videoPlayer.src = URL.createObjectURL(file);
-                videoPlayer.play();
-            }
-        }
-        
-        function setDoctorStatus(status) {
-            document.getElementById('doctor-available').innerText = status;
-        }
-    </script>
+    <div class="video-container">
+        <div class="video-title">Middle Video Player</div>
+        <video width="1024" height="360" controls>
+            <source src="" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    </div>
+    
+    <div class="video-container">
+        <div class="video-title">Bottom Video Player</div>
+        <video width="1024" height="720" controls>
+            <source src="" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    </div>
 </body>
 </html>
+
