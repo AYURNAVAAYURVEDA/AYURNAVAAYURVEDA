@@ -20,25 +20,60 @@
         .video-container {
             text-align: center;
             margin-bottom: 20px;
+            position: relative;
         }
         video {
             background: black;
+            width: 1024px;
+        }
+        .controls {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            align-items: center;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 10px;
+            border-radius: 5px;
+        }
+        input, button {
+            font-size: 16px;
+            padding: 5px;
         }
     </style>
+    <script>
+        function loadVideo(videoId) {
+            const urlInput = document.getElementById(`url-${videoId}`).value;
+            if (urlInput) {
+                document.getElementById(videoId).src = urlInput;
+            }
+        }
+    </script>
 </head>
 <body>
     <div class="video-container">
-        <video width="1024" height="360" controls>
+        <video id="video1" width="1024" height="360" controls>
             <source src="" type="video/mp4">
             Your browser does not support the video tag.
         </video>
+        <div class="controls">
+            <input type="text" id="url-video1" placeholder="Enter video URL">
+            <button onclick="loadVideo('video1')">Go</button>
+        </div>
     </div>
     
     <div class="video-container">
-        <video width="1024" height="720" controls>
+        <video id="video2" width="1024" height="720" controls>
             <source src="" type="video/mp4">
             Your browser does not support the video tag.
         </video>
+        <div class="controls">
+            <input type="text" id="url-video2" placeholder="Enter video URL">
+            <button onclick="loadVideo('video2')">Go</button>
+        </div>
     </div>
 </body>
 </html>
