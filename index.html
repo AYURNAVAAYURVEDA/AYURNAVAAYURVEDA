@@ -2,108 +2,162 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=1280, height=1024">
-    <title>Video Player Page</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ayurveda Dispensary</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
     <style>
         body {
-            width: 1280px;
-            height: 1024px;
-            margin: 0;
+            background: url('https://www.lionsroar.com/wp-content/uploads/2023/09/physician-featured.png') no-repeat center center fixed;
+            background-size: cover;
             display: flex;
-            flex-direction: column;
+            justify-content: center;
             align-items: center;
-            justify-content: space-between;
-            background-color: #222;
+            min-height: 100vh;
+            flex-direction: column;
             color: white;
-            overflow: hidden;
+            font-size: 40px;
+            margin: 0;
+        }
+        .container {
+            text-align: center;
+            background: rgba(0, 0, 0, 0.6);
+            padding: 20px;
+            border-radius: 10px;
+            width: 100%;
+            max-width: 1280px;
             position: relative;
-            padding: 20px 0;
+        }
+        #doctor-available {
+            font-size: 70px;
+            color: yellow;
+            font-weight: bold;
+        }
+        #treatment-number {
+            font-size: 80px;
+            color: red;
+            font-weight: bold;
+        }
+        button {
+            font-size: 12px;
+            padding: 5px 10px;
+            margin: 5px;
         }
         .video-container {
+            margin-top: 20px;
             text-align: center;
         }
-        video, iframe {
+        iframe {
+            width: 100%;
+            height: 700px;
+            max-width: 1200px;
             background: black;
-            width: 1024px;
         }
-        .control-panel {
-            position: absolute;
-            left: 20px;
-            top: 50%;
-            transform: translateY(-50%);
+        .choose-video {
+            background-color: purple;
+            color: white;
+        }
+        .green-button {
+            background-color: green;
+            color: white;
+            font-size: 12px;
+        }
+        .yellow-button {
+            background-color: yellow;
+            color: black;
+            font-size: 12px;
+        }
+        input[type='text'] {
+            width: 200px;
+            padding: 5px;
+            font-size: 15px;
+        }
+        .treatment-container {
             display: flex;
-            flex-direction: column;
+            align-items: center;
+            justify-content: center;
             gap: 20px;
         }
-        .url-box {
+        .url-video-container {
             display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-            gap: 5px;
-        }
-        input, button {
-            font-size: 14px;
-            padding: 5px;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
         }
     </style>
-    <script>
-        function addVideos() {
-            const input = document.createElement('input');
-            input.type = 'file';
-            input.multiple = true;
-            input.accept = 'video/*';
-            input.onchange = event => {
-                const files = event.target.files;
-                if (files.length > 0) {
-                    const videoPlayer = document.getElementById('video2');
-                    let index = 0;
-                    videoPlayer.src = URL.createObjectURL(files[index]);
-                    videoPlayer.play();
-                    videoPlayer.onended = function() {
-                        index++;
-                        if (index < files.length) {
-                            videoPlayer.src = URL.createObjectURL(files[index]);
-                            videoPlayer.play();
-                        }
-                    };
-                }
-            };
-            input.click();
-        }
-        function playYouTubeVideo() {
-            const url = document.getElementById('youtube-url').value;
-            if (url) {
-                const videoPlayer = document.getElementById('video3');
-                videoPlayer.src = url.replace("watch?v=", "embed/");
-            }
-        }
-    </script>
 </head>
 <body>
-    <div class="control-panel">
-        <button onclick="addVideos()">Add Videos</button>
-        <div class="url-box">
-            <input type="text" id="youtube-url" placeholder="Enter YouTube URL">
-            <button onclick="playYouTubeVideo()">Go</button>
+    <div class="container">
+        <div id="doctor-available">DOCTOR IS AVAILABLE</div>
+        <button class="btn green-button" onclick="setDoctorStatus('DOCTOR IS AVAILABLE')">Set Available</button>
+        <button class="btn yellow-button" onclick="setDoctorStatus('DOCTOR COMING SOON. PLEASE WAIT')">Set Coming Soon</button>
+        
+        <div class="treatment-container">
+            <h1>Ongoing Treatment Number</h1>
+            <div id="treatment-number">0</div>
+        </div>
+        <button class="btn btn-light" onclick="nextTreatment()">Next</button>
+        <button class="btn btn-danger" onclick="resetTreatment()">Reset</button>
+        
+        <div class="video-container">
+            <iframe id="videoPlayer" src="" frameborder="0" allowfullscreen></iframe>
+            <br>
+            <div class="url-video-container">
+                <input type="text" id="youtubeUrl" placeholder="YouTube Video URL">
+                <button class="btn btn-primary" onclick="playYouTubeVideo()">Play Video</button>
+                <input type="file" id="videoFile" accept="video/*" multiple style="display: none;" onchange="loadVideos(event)">
+                <button class="btn choose-video" onclick="document.getElementById('videoFile').click();">Choose Videos</button>
+            </div>
         </div>
     </div>
     
-    <div class="video-container">
-        <video id="video1" width="1024" height="360" controls>
-            <source src="" type="video/mp4">
-            Your browser does not support the video tag.
-        </video>
-    </div>
-    
-    <div class="video-container">
-        <video id="video2" width="1024" height="720" controls>
-            <source src="" type="video/mp4">
-            Your browser does not support the video tag.
-        </video>
-    </div>
-    
-    <div class="video-container">
-        <iframe id="video3" width="1024" height="720" style="background: black;" allowfullscreen></iframe>
-    </div>
+    <script>
+        let treatmentNumber = 0;
+        let videoList = [];
+        let currentVideoIndex = 0;
+
+        function nextTreatment() {
+            treatmentNumber++;
+            document.getElementById('treatment-number').innerText = treatmentNumber;
+        }
+
+        function resetTreatment() {
+            treatmentNumber = 0;
+            document.getElementById('treatment-number').innerText = treatmentNumber;
+        }
+
+        function loadVideos(event) {
+            videoList = Array.from(event.target.files).map(file => URL.createObjectURL(file));
+            currentVideoIndex = 0;
+            if (videoList.length > 0) {
+                playNextVideo();
+            }
+        }
+
+        function playNextVideo() {
+            if (videoList.length > 0) {
+                const videoPlayer = document.getElementById("videoPlayer");
+                videoPlayer.src = videoList[currentVideoIndex];
+                currentVideoIndex = (currentVideoIndex + 1) % videoList.length;
+                videoPlayer.onended = playNextVideo;
+            }
+        }
+
+        function setDoctorStatus(status) {
+            document.getElementById('doctor-available').innerText = status;
+        }
+
+        function playYouTubeVideo() {
+            const url = document.getElementById('youtubeUrl').value;
+            const videoPlayer = document.getElementById("videoPlayer");
+            const videoId = url.split("v=")[1]?.split('&')[0];
+            if (videoId) {
+                videoPlayer.src = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
+                videoPlayer.onended = playNextVideo;
+            } else {
+                alert('Invalid YouTube URL');
+            }
+        }
+    </script>
 </body>
 </html>
+
