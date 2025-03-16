@@ -12,57 +12,87 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
+            justify-content: space-between;
             background-color: #222;
             color: white;
             overflow: hidden;
+            position: relative;
+            padding: 20px 0;
         }
         .video-container {
             text-align: center;
-            margin-bottom: 20px;
-            position: relative;
         }
-        video {
+        video, iframe {
             background: black;
             width: 1024px;
         }
-        .controls {
+        .control-panel {
             position: absolute;
+            left: 20px;
             top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
+            transform: translateY(-50%);
             display: flex;
             flex-direction: column;
+            gap: 20px;
+        }
+        .url-box {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
             gap: 5px;
-            align-items: center;
-            background: rgba(0, 0, 0, 0.5);
-            padding: 10px;
-            border-radius: 5px;
         }
         input, button {
-            font-size: 16px;
+            font-size: 14px;
             padding: 5px;
         }
     </style>
     <script>
-        function loadVideo(videoId) {
-            const urlInput = document.getElementById(`url-${videoId}`).value;
-            if (urlInput) {
-                document.getElementById(videoId).src = urlInput;
+        function addVideos() {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.multiple = true;
+            input.accept = 'video/*';
+            input.onchange = event => {
+                const files = event.target.files;
+                if (files.length > 0) {
+                    const videoPlayer = document.getElementById('video2');
+                    let index = 0;
+                    videoPlayer.src = URL.createObjectURL(files[index]);
+                    videoPlayer.play();
+                    videoPlayer.onended = function() {
+                        index++;
+                        if (index < files.length) {
+                            videoPlayer.src = URL.createObjectURL(files[index]);
+                            videoPlayer.play();
+                        }
+                    };
+                }
+            };
+            input.click();
+        }
+        function playYouTubeVideo() {
+            const url = document.getElementById('youtube-url').value;
+            if (url) {
+                const videoPlayer = document.getElementById('video3');
+                videoPlayer.src = url.replace("watch?v=", "embed/");
             }
         }
     </script>
 </head>
 <body>
+    <div class="control-panel">
+        <button onclick="addVideos()">Add Videos</button>
+        <div class="url-box">
+            <input type="text" id="youtube-url" placeholder="Enter YouTube URL">
+            <button onclick="playYouTubeVideo()">Go</button>
+        </div>
+    </div>
+    
     <div class="video-container">
         <video id="video1" width="1024" height="360" controls>
             <source src="" type="video/mp4">
             Your browser does not support the video tag.
         </video>
-        <div class="controls">
-            <input type="text" id="url-video1" placeholder="Enter video URL">
-            <button onclick="loadVideo('video1')">Go</button>
-        </div>
     </div>
     
     <div class="video-container">
@@ -70,10 +100,10 @@
             <source src="" type="video/mp4">
             Your browser does not support the video tag.
         </video>
-        <div class="controls">
-            <input type="text" id="url-video2" placeholder="Enter video URL">
-            <button onclick="loadVideo('video2')">Go</button>
-        </div>
+    </div>
+    
+    <div class="video-container">
+        <iframe id="video3" width="1024" height="720" style="background: black;" allowfullscreen></iframe>
     </div>
 </body>
 </html>
