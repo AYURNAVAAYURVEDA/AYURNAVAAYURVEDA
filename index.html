@@ -9,7 +9,7 @@
         body {
             background-color: blue;
             display: flex;
-            justify-content: center; /* Center horizontally */
+            justify-content: center;
             align-items: center;
             min-height: 100vh;
             color: white;
@@ -23,6 +23,7 @@
             border-radius: 10px;
             width: 90%;
             max-width: 1280px;
+            position: relative; /* Needed for absolute positioning of the banner video */
         }
         #doctor-available {
             font-size: 60px;
@@ -82,6 +83,14 @@
             gap: 10px;
             flex-wrap: wrap;
         }
+        #bannerVideo {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 200px; /* Adjust size as needed */
+            height: 150px; /* Adjust size as needed */
+            background: black;
+        }
     </style>
 </head>
 <body>
@@ -105,8 +114,11 @@
                 <button class="btn btn-primary" onclick="playYouTubeVideo()">Play YouTube Video</button>
                 <input type="file" id="videoFile" accept="video/*" multiple style="display: none;" onchange="loadVideos(event)">
                 <button class="btn choose-video" onclick="document.getElementById('videoFile').click();">Choose Videos</button>
+                <input type="file" id="bannerVideoFile" accept="video/*" style="display: none;" onchange="loadBannerVideo(event)">
+                <button class="btn choose-video" onclick="document.getElementById('bannerVideoFile').click();">Banner Video</button>
             </div>
         </div>
+        <video id="bannerVideo" controls></video>
     </div>
 
     <script>
@@ -114,6 +126,7 @@
         let videoList = [];
         let currentVideoIndex = 0;
         const videoPlayer = document.getElementById("videoPlayer");
+        const bannerVideoPlayer = document.getElementById("bannerVideo");
 
         function nextTreatment() {
             treatmentNumber++;
@@ -161,6 +174,15 @@
         function extractYouTubeID(url) {
             const match = url.match(/[?&]v=([^&]+)/) || url.match(/youtu\.be\/([^?]+)/);
             return match ? match[1] : null;
+        }
+
+        function loadBannerVideo(event) {
+            const file = event.target.files[0];
+            if (file) {
+                bannerVideoPlayer.src = URL.createObjectURL(file);
+                bannerVideoPlayer.load();
+                bannerVideoPlayer.play();
+            }
         }
     </script>
 </body>
