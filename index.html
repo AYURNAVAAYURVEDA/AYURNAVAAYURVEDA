@@ -120,7 +120,7 @@
                 <button class="btn btn-primary" onclick="playYouTubeVideo()">Play YouTube Video</button>
                 <input type="file" id="videoFile" accept="video/*" multiple style="display: none;" onchange="loadVideos(event)">
                 <button class="btn choose-video" onclick="document.getElementById('videoFile').click();">Choose Videos</button>
-                <input type="file" id="bannerVideoFile" accept="video/*" style="display: none;" onchange="loadBannerVideo(event)">
+                <input type="file" id="bannerVideoFile" accept="video/*" multiple style="display: none;" onchange="loadBannerVideos(event)">
                 <button class="btn choose-video" onclick="document.getElementById('bannerVideoFile').click();">Banner Video</button>
             </div>
         </div>
@@ -133,6 +133,8 @@
         let currentVideoIndex = 0;
         const videoPlayer = document.getElementById("videoPlayer");
         const bannerVideoPlayer = document.getElementById("bannerVideo");
+        let bannerVideoList = [];
+        let currentBannerVideoIndex = 0;
 
         function nextTreatment() {
             treatmentNumber++;
@@ -185,12 +187,21 @@
             return videoId;
         }
 
-        function loadBannerVideo(event) {
-            const file = event.target.files[0];
-            if (file) {
-                bannerVideoPlayer.src = URL.createObjectURL(file);
+        function loadBannerVideos(event) {
+            bannerVideoList = Array.from(event.target.files).map(file => URL.createObjectURL(file));
+            currentBannerVideoIndex = 0;
+            if (bannerVideoList.length > 0) {
+                playNextBannerVideo();
+            }
+        }
+
+        function playNextBannerVideo() {
+            if (bannerVideoList.length > 0) {
+                bannerVideoPlayer.src = bannerVideoList[currentBannerVideoIndex];
                 bannerVideoPlayer.load();
                 bannerVideoPlayer.play();
+                currentBannerVideoIndex = (currentBannerVideoIndex + 1) % bannerVideoList.length;
+                bannerVideoPlayer.onended = playNextBannerVideo;
             }
         }
     </script>
