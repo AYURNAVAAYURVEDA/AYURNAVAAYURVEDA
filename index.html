@@ -208,12 +208,4 @@
                 bannerVideoPlayer.src = bannerVideoList[currentBannerVideoIndex];
                 bannerVideoPlayer.load();
                 bannerVideoPlayer.play();
-                currentBannerVideoIndex = (currentBannerVideoIndex + 1) % bannerVideoList.length;
-                bannerVideoPlayer.onended = playNextBannerVideo;
-            }
-        }
-
-        function toggleTreatmentArea() {
-            treatmentAreaVisible = !treatmentAreaVisible;
-            treatmentArea.classList.toggle('hidden', !treatmentAreaVisible);
-            nextButton.classList.toggle('hidden', !
+                currentBannerVideoIndex = (currentBannerVideoIndex + 1) % bannerVideoList.length
