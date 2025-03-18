@@ -140,6 +140,9 @@
         let bannerVideoList = [];
         let currentBannerVideoIndex = 0;
         let treatmentAreaVisible = true;
+        const treatmentArea = document.getElementById('treatmentArea');
+        const nextButton = document.getElementById('nextButton');
+        const resetButton = document.getElementById('resetButton');
 
         function nextTreatment() {
             treatmentNumber++;
@@ -211,6 +214,6 @@
         }
 
         function toggleTreatmentArea() {
-            const treatmentArea = document.getElementById('treatmentArea');
-            const nextButton = document.getElementById('nextButton');
-            const resetButton = document.getElementById('resetButton');
+            treatmentAreaVisible = !treatmentAreaVisible;
+            treatmentArea.classList.toggle('hidden', !treatmentAreaVisible);
+            nextButton.classList.toggle('hidden', !
