@@ -37,7 +37,7 @@
             align-items: center;
             gap: 20px;
             flex-wrap: wrap;
-            justify-content: flex-end; /* Align to the right */
+            justify-content: flex-end;
         }
         #treatment-number {
             font-size: 80px;
@@ -70,14 +70,6 @@
             background-color: purple;
             color: white;
         }
-        .green-button {
-            background-color: green;
-            color: white;
-        }
-        .yellow-button {
-            background-color: yellow;
-            color: black;
-        }
         input[type='text'] {
             width: 250px;
             padding: 10px;
@@ -98,8 +90,6 @@
 <body>
     <div class="container">
         <div id="doctor-available">DOCTOR ON DUTY</div>
-        <button class="btn green-button" onclick="setDoctorStatus('DOCTOR ON DUTY')">Set Available</button>
-        <button class="btn yellow-button" onclick="setDoctorStatus('DOCTOR COMING SOON. PLEASE WAIT')">Set Coming Soon</button>
 
         <div class="treatment-container">
             <h1>Current Treatment Number</h1>
@@ -122,7 +112,59 @@
     </div>
 
     <script>
-        // ... (Your JavaScript remains the same) ...
+        let treatmentNumber = 0;
+        let videoList = [];
+        let currentVideoIndex = 0;
+        const videoPlayer = document.getElementById("videoPlayer");
+
+        function nextTreatment() {
+            treatmentNumber++;
+            document.getElementById('treatment-number').innerText = treatmentNumber;
+        }
+
+        function resetTreatment() {
+            treatmentNumber = 0;
+            document.getElementById('treatment-number').innerText = treatmentNumber;
+        }
+
+        function loadVideos(event) {
+            videoList = Array.from(event.target.files).map(file => URL.createObjectURL(file));
+            currentVideoIndex = 0;
+            if (videoList.length > 0) {
+                playNextVideo();
+            }
+        }
+
+        function playNextVideo() {
+            if (videoList.length > 0) {
+                videoPlayer.src = videoList[currentVideoIndex];
+                videoPlayer.load();
+                videoPlayer.play();
+                currentVideoIndex = (currentVideoIndex + 1) % videoList.length;
+                videoPlayer.onended = playNextVideo;
+            }
+        }
+
+        function playYouTubeVideo() {
+            const url = document.getElementById('youtubeUrl').value;
+            const videoId = extractYouTubeID(url);
+            if (videoId) {
+                videoPlayer.src = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
+                videoPlayer.load();
+                videoPlayer.onerror = function(){
+                    alert("Error loading Youtube video");
+                    document.getElementById('youtubeUrl').value = "";
+                }
+            } else {
+                alert('Invalid YouTube URL');
+                document.getElementById('youtubeUrl').value = "";
+            }
+        }
+
+        function extractYouTubeID(url) {
+            const match = url.match(/[?&]v=([^&]+)/) || url.match(/youtu\.be\/([^?]+)/);
+            return match ? match[1] : null;
+        }
     </script>
 </body>
 </html>
