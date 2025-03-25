@@ -24,6 +24,8 @@
             width: 90%;
             max-width: 1280px;
             position: relative;
+            display: flex;
+            flex-direction: column; /* Stack elements vertically */
         }
         #doctor-available {
             font-size: 60px;
@@ -31,31 +33,47 @@
             font-weight: bold;
             margin-bottom: 10px;
         }
+        .treatment-container {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
         #treatment-number {
             font-size: 80px;
             color: red;
             font-weight: bold;
             margin-left: 20px;
         }
-        button {
-            font-size: 16px;
-            padding: 8px 12px;
-            margin: 10px;
-        }
         .video-container {
             margin-top: 20px;
+            flex-grow: 1; /* Allow video container to take up remaining space */
+            display: flex;
+            flex-direction: column;
         }
         iframe {
             width: 100%;
-            height: 500px;
-            max-width: 1200px;
+            height: 100%; /* Fill the available space */
             background: black;
         }
         video {
             width: 100%;
-            height: 500px;
-            max-width: 1200px;
+            height: 300px;
+            max-width: 400px;
             background: black;
+        }
+        .url-video-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 10px; /* Add some space between buttons and video */
+        }
+        button {
+            font-size: 16px;
+            padding: 8px 12px;
+            margin: 10px;
         }
         .choose-video {
             background-color: purple;
@@ -75,19 +93,6 @@
             font-size: 16px;
             border-radius: 5px;
             border: none;
-        }
-        .treatment-container {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-            flex-wrap: wrap;
-        }
-        .url-video-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 10px;
-            flex-wrap: wrap;
         }
         #bannerVideo {
             position: absolute;
@@ -113,8 +118,7 @@
         <button class="btn btn-danger" onclick="resetTreatment()">Reset</button>
 
         <div class="video-container">
-            <iframe id="videoPlayer" width="100%" height="500" frameborder="0" allowfullscreen></iframe>
-            <br>
+            <iframe id="videoPlayer" frameborder="0" allowfullscreen></iframe>
             <div class="url-video-container">
                 <input type="text" id="youtubeUrl" placeholder="YouTube Video URL">
                 <button class="btn btn-primary" onclick="playYouTubeVideo()">Play YouTube Video</button>
@@ -128,82 +132,7 @@
     </div>
 
     <script>
-        let treatmentNumber = 0;
-        let videoList = [];
-        let currentVideoIndex = 0;
-        const videoPlayer = document.getElementById("videoPlayer");
-        const bannerVideoPlayer = document.getElementById("bannerVideo");
-        let bannerVideoList = [];
-        let currentBannerVideoIndex = 0;
-
-        function nextTreatment() {
-            treatmentNumber++;
-            document.getElementById('treatment-number').innerText = treatmentNumber;
-        }
-
-        function resetTreatment() {
-            treatmentNumber = 0;
-            document.getElementById('treatment-number').innerText = treatmentNumber;
-        }
-
-        function loadVideos(event) {
-            videoList = Array.from(event.target.files).map(file => URL.createObjectURL(file));
-            currentVideoIndex = 0;
-            if (videoList.length > 0) {
-                playNextVideo();
-            }
-        }
-
-        function playNextVideo() {
-            if (videoList.length > 0) {
-                videoPlayer.src = videoList[currentVideoIndex];
-                videoPlayer.load();
-                videoPlayer.play();
-                currentVideoIndex = (currentVideoIndex + 1) % videoList.length;
-                videoPlayer.onended = playNextVideo;
-            }
-        }
-
-        function setDoctorStatus(status) {
-            document.getElementById('doctor-available').innerText = status;
-        }
-
-        function playYouTubeVideo() {
-            const url = document.getElementById('youtubeUrl').value;
-            const videoId = extractYouTubeID(url);
-            if (videoId) {
-                videoPlayer.src = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
-            } else {
-                alert('Invalid YouTube URL');
-            }
-        }
-
-        function extractYouTubeID(url) {
-            let videoId = null;
-            const match = url.match(/[?&]v=([^&]+)/) || url.match(/youtu\.be\/([^?]+)/) || url.match(/youtube\.com\/embed\/([^?]+)/) || url.match(/youtube\.com\/v\/([^?]+)/);
-            if (match && match[1]) {
-                videoId = match[1];
-            }
-            return videoId;
-        }
-
-        function loadBannerVideos(event) {
-            bannerVideoList = Array.from(event.target.files).map(file => URL.createObjectURL(file));
-            currentBannerVideoIndex = 0;
-            if (bannerVideoList.length > 0) {
-                playNextBannerVideo();
-            }
-        }
-
-        function playNextBannerVideo() {
-            if (bannerVideoList.length > 0) {
-                bannerVideoPlayer.src = bannerVideoList[currentBannerVideoIndex];
-                bannerVideoPlayer.load();
-                bannerVideoPlayer.play();
-                currentBannerVideoIndex = (currentBannerVideoIndex + 1) % bannerVideoList.length;
-                bannerVideoPlayer.onended = playNextBannerVideo;
-            }
-        }
+        // ... (Your JavaScript remains the same) ...
     </script>
 </body>
 </html>
