@@ -51,14 +51,14 @@
         }
         .treatment-buttons {
             display: flex;
-            flex-direction: column;
+            flex-direction: row; /* Arrange buttons horizontally */
             margin-left: 20px;
             margin-top: 0;
         }
         button {
             font-size: 16px;
             padding: 8px 12px;
-            margin: 5px 0;
+            margin: 5px 10px; /* Add horizontal margin between buttons */
         }
         .video-container {
             margin-top: 20px;
