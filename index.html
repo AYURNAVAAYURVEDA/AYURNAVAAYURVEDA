@@ -31,12 +31,16 @@
             color: yellow;
             font-weight: bold;
             margin-bottom: 10px;
+            display: flex; /* Use flexbox for alignment */
+            align-items: center; /* Vertically center items */
+            justify-content: space-between; /* push items to the edges */
         }
         .treatment-container {
             display: flex;
             align-items: flex-start;
             gap: 20px;
             flex-wrap: wrap;
+            justify-content: flex-end;
         }
         #treatment-number {
             font-size: 80px;
@@ -47,14 +51,14 @@
         }
         .treatment-buttons {
             display: flex;
-            flex-direction: column;
+            flex-direction: row; /* Arrange buttons horizontally */
             margin-left: 20px;
             margin-top: 0;
         }
         button {
             font-size: 16px;
             padding: 8px 12px;
-            margin: 5px 0;
+            margin: 5px 10px; /* Add horizontal margin between buttons */
         }
         .video-container {
             margin-top: 20px;
@@ -93,10 +97,14 @@
     <div class="container">
         <div id="doctor-available">
             DOCTOR ON DUTY
+            <div style="display: flex; align-items: baseline;">
+                <span style="font-size: 40px; margin-right: 10px;">Number: </span>
+                <div id="treatment-number" style="margin-left: 0;">0</div>
+            </div>
         </div>
 
         <div class="treatment-container">
-            <div id="treatment-number">0</div>
+
             <div class="treatment-buttons">
                 <button class="btn btn-light" onclick="nextTreatment()">Next</button>
                 <button class="btn btn-danger" onclick="resetTreatment()">Reset</button>
