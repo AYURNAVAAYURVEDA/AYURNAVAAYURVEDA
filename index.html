@@ -31,16 +31,12 @@
             color: yellow;
             font-weight: bold;
             margin-bottom: 10px;
-            display: flex;
-            flex-direction: column; /* Stack elements vertically */
-            align-items: flex-start; /* Align items to the start (left in LTR) */
         }
         .treatment-container {
             display: flex;
             align-items: flex-start;
             gap: 20px;
             flex-wrap: wrap;
-            justify-content: flex-end;
         }
         #treatment-number {
             font-size: 80px;
@@ -91,27 +87,16 @@
             flex-wrap: wrap;
             margin-top: 10px;
         }
-        #bannerVideoPlayer {
-            height: 1.5in;  /* 1.5 inches */
-            width: 7in;
-            background-color: black;
-            margin-top: 10px;
-        }
     </style>
 </head>
 <body>
     <div class="container">
         <div id="doctor-available">
             DOCTOR ON DUTY
-            <video id="bannerVideoPlayer" controls></video>
-            <div style="display: flex; align-items: baseline;">
-                <span style="font-size: 40px; margin-right: 10px;">Number: </span>
-                <div id="treatment-number" style="margin-left: 0;">0</div>
-            </div>
         </div>
 
         <div class="treatment-container">
-
+            <div id="treatment-number">0</div>
             <div class="treatment-buttons">
                 <button class="btn btn-light" onclick="nextTreatment()">Next</button>
                 <button class="btn btn-danger" onclick="resetTreatment()">Reset</button>
@@ -135,8 +120,6 @@
         let currentVideoIndex = 0;
         const videoPlayer = document.getElementById("videoPlayer");
         const youtubeUrlInput = document.getElementById('youtubeUrl');
-        const bannerVideoPlayer = document.getElementById("bannerVideoPlayer");
-
 
         function nextTreatment() {
             treatmentNumber++;
@@ -153,13 +136,6 @@
             currentVideoIndex = 0;
             if (videoList.length > 0) {
                 playNextVideo();
-            }
-             //play the video in the small player as well
-            if (videoList.length > 0) {
-                bannerVideoPlayer.src = videoList[0]; //play the first video.
-                bannerVideoPlayer.load();
-                bannerVideoPlayer.play();
-
             }
         }
 
@@ -186,13 +162,6 @@
             } else {
                 alert('Invalid YouTube URL');
                 document.getElementById('youtubeUrl').value = "";
-            }
-             //play the video in the small player as well
-            if (videoId) {
-                bannerVideoPlayer.src = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
-                bannerVideoPlayer.load();
-                bannerVideoPlayer.play();
-
             }
         }
 
