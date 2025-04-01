@@ -161,12 +161,14 @@
             const url = document.getElementById('youtubeUrl').value;
             const videoId = extractYouTubeID(url);
             if (videoId) {
+                // Use a YouTube embed URL.  This is generally the most reliable way to play YouTube videos in a web page.
                 videoPlayer.src = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
                 videoPlayer.load();
-                videoPlayer.onerror = function(){
+                 videoPlayer.onerror = function(){
                     alert("Error loading Youtube video");
                     document.getElementById('youtubeUrl').value = "";
                 }
+
             } else {
                 alert('Invalid YouTube URL');
                 document.getElementById('youtubeUrl').value = "";
@@ -174,7 +176,10 @@
         }
 
         function extractYouTubeID(url) {
-            const match = url.match(/[?&]v=([^&]+)/) || url.match(/youtu\.be\/([^?]+)/);
+            // Improved regex to handle various YouTube URL formats
+            const regExp = /^.*(youtu\.be\/|v\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+            const match = url.match(regExp);
+            return (match && match[2].length === 11) ? match[2] : false;
         }
 
         // Event listener for the Enter key
