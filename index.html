@@ -165,8 +165,9 @@
                 videoPlayer.src = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
                 videoPlayer.load();
                  videoPlayer.onerror = function(){
-                    alert("Error loading Youtube video");
+                    alert("Error loading Youtube video.  Check the URL and your connection.");
                     document.getElementById('youtubeUrl').value = "";
+                    videoPlayer.src = ""; // Clear the video source to prevent further errors.
                 }
 
             } else {
