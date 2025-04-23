@@ -26,20 +26,62 @@
             display: flex;
             flex-direction: column;
         }
+        #doctor-available {
+            font-size: 60px;
+            color: yellow;
+            font-weight: bold;
+            margin-bottom: 10px;
+            display: flex; /* Use flexbox for alignment */
+            align-items: center; /* Vertically center items */
+            justify-content: space-between; /* push items to the edges */
+        }
+        .treatment-container {
+            display: flex;
+            align-items: flex-start;
+            gap: 20px;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+        }
+        #treatment-number {
+            font-size: 80px;
+            color: red;
+            font-weight: bold;
+            margin-left: 20px;
+            margin-bottom: 0;
+        }
+        .treatment-buttons {
+            display: flex;
+            flex-direction: row; /* Arrange buttons horizontally */
+            margin-left: 20px;
+            margin-top: 0;
+        }
+        button {
+            font-size: 16px;
+            padding: 8px 12px;
+            margin: 5px 10px; /* Add horizontal margin between buttons */
+        }
         .video-container {
             margin-top: 20px;
             flex-grow: 1;
             display: flex;
             flex-direction: column;
         }
-        iframe, video {
+        video {
             width: 100%;
-            height: 500px;
+            height: 100%;
             background: black;
+            max-height: 1080px;
         }
         .choose-video {
             background-color: purple;
             color: white;
+        }
+        input[type='text'] {
+            width: 250px;
+            padding: 10px;
+            font-size: 16px;
+            border-radius: 5px;
+            border: none;
         }
         .url-video-container {
             display: flex;
@@ -53,10 +95,24 @@
 </head>
 <body>
     <div class="container">
+        <div id="doctor-available">
+            DOCTOR ON DUTY
+            <div style="display: flex; align-items: baseline;">
+                <span style="font-size: 40px; margin-right: 10px;">Number: </span>
+                <div id="treatment-number" style="margin-left: 0;">0</div>
+            </div>
+        </div>
+
+        <div class="treatment-container">
+
+            <div class="treatment-buttons">
+                <button class="btn btn-light" onclick="nextTreatment()">Next</button>
+                <button class="btn btn-danger" onclick="resetTreatment()">Reset</button>
+            </div>
+        </div>
+
         <div class="video-container">
-            <iframe id="youtubePlayer" frameborder="0" allowfullscreen></iframe>
-            <video id="videoPlayer" controls style="display: none;"></video>
-            
+            <video id="videoPlayer" controls></video>
             <div class="url-video-container">
                 <input type="text" id="youtubeUrl" placeholder="YouTube Video URL">
                 <button class="btn btn-primary" onclick="playYouTubeVideo()">Play YouTube Video</button>
@@ -67,11 +123,22 @@
     </div>
 
     <script>
+        let treatmentNumber = 0;
         let videoList = [];
         let currentVideoIndex = 0;
         const videoPlayer = document.getElementById("videoPlayer");
-        const youtubePlayer = document.getElementById("youtubePlayer");
-        
+        const youtubeUrlInput = document.getElementById('youtubeUrl');
+
+        function nextTreatment() {
+            treatmentNumber++;
+            document.getElementById('treatment-number').innerText = treatmentNumber;
+        }
+
+        function resetTreatment() {
+            treatmentNumber = 0;
+            document.getElementById('treatment-number').innerText = treatmentNumber;
+        }
+
         function loadVideos(event) {
             videoList = Array.from(event.target.files).map(file => URL.createObjectURL(file));
             currentVideoIndex = 0;
@@ -82,8 +149,6 @@
 
         function playNextVideo() {
             if (videoList.length > 0) {
-                youtubePlayer.style.display = "none";
-                videoPlayer.style.display = "block";
                 videoPlayer.src = videoList[currentVideoIndex];
                 videoPlayer.load();
                 videoPlayer.play();
@@ -96,19 +161,28 @@
             const url = document.getElementById('youtubeUrl').value;
             const videoId = extractYouTubeID(url);
             if (videoId) {
-                videoPlayer.style.display = "none";
-                youtubePlayer.style.display = "block";
-                youtubePlayer.src = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
+                videoPlayer.src = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
+                videoPlayer.load();
+                videoPlayer.onerror = function(){
+                    alert("Error loading Youtube video");
+                    document.getElementById('youtubeUrl').value = "";
+                }
             } else {
                 alert('Invalid YouTube URL');
+                document.getElementById('youtubeUrl').value = "";
             }
         }
 
         function extractYouTubeID(url) {
-            const regExp = /^.*(youtu\.be\/|v\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
-            const match = url.match(regExp);
-            return (match && match[2].length === 11) ? match[2] : false;
+            const match = url.match(/[?&]v=([^&]+)/) || url.match(/youtu\.be\/([^?]+)/);
         }
+
+        // Event listener for the Enter key
+        youtubeUrlInput.addEventListener('keypress', function(event) {
+            if (event.key === 'Enter') {
+                nextTreatment();
+            }
+        });
     </script>
 </body>
 </html>
