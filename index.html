@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
     <style>
         body {
-            background-color: blue;
+            background-color: #000000; /* Jet black */
             display: flex;
             justify-content: center;
             align-items: center;
@@ -33,7 +33,7 @@
             margin-bottom: 10px;
             display: flex; /* Use flexbox for alignment */
             align-items: center; /* Vertically center items */
-            justify-content: space-between; /* push items to the edges */
+            justify-content: space-between; /* Push items to the edges */
         }
         .treatment-container {
             display: flex;
@@ -104,7 +104,6 @@
         </div>
 
         <div class="treatment-container">
-
             <div class="treatment-buttons">
                 <button class="btn btn-light" onclick="nextTreatment()">Next</button>
                 <button class="btn btn-danger" onclick="resetTreatment()">Reset</button>
@@ -164,7 +163,7 @@
                 videoPlayer.src = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
                 videoPlayer.load();
                 videoPlayer.onerror = function(){
-                    alert("Error loading Youtube video");
+                    alert("Error loading YouTube video");
                     document.getElementById('youtubeUrl').value = "";
                 }
             } else {
