@@ -76,20 +76,8 @@
             background-color: purple;
             color: white;
         }
-        input[type='text'] {
-            width: 250px;
-            padding: 10px;
-            font-size: 16px;
-            border-radius: 5px;
-            border: none;
-        }
-        .url-video-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 10px;
-            flex-wrap: wrap;
-            margin-top: 10px;
+        input[type='file'] {
+            display: none;
         }
     </style>
 </head>
@@ -113,9 +101,7 @@
         <div class="video-container">
             <video id="videoPlayer" controls></video>
             <div class="url-video-container">
-                <input type="text" id="youtubeUrl" placeholder="YouTube Video URL">
-                <button class="btn btn-primary" onclick="playYouTubeVideo()">Play YouTube Video</button>
-                <input type="file" id="videoFile" accept="video/*" multiple style="display: none;" onchange="loadVideos(event)">
+                <input type="file" id="videoFile" accept="video/*" multiple onchange="loadVideos(event)">
                 <button class="btn choose-video" onclick="document.getElementById('videoFile').click();">Choose Videos</button>
             </div>
         </div>
@@ -126,7 +112,6 @@
         let videoList = [];
         let currentVideoIndex = 0;
         const videoPlayer = document.getElementById("videoPlayer");
-        const youtubeUrlInput = document.getElementById('youtubeUrl');
 
         function nextTreatment() {
             treatmentNumber++;
@@ -155,34 +140,6 @@
                 videoPlayer.onended = playNextVideo;
             }
         }
-
-        function playYouTubeVideo() {
-            const url = document.getElementById('youtubeUrl').value;
-            const videoId = extractYouTubeID(url);
-            if (videoId) {
-                videoPlayer.src = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
-                videoPlayer.load();
-                videoPlayer.onerror = function(){
-                    alert("Error loading YouTube video");
-                    document.getElementById('youtubeUrl').value = "";
-                }
-            } else {
-                alert('Invalid YouTube URL');
-                document.getElementById('youtubeUrl').value = "";
-            }
-        }
-
-        function extractYouTubeID(url) {
-            const match = url.match(/(?:youtube\.com\/(?:.*v=|.*\/|.*\?v=)|youtu\.be\/)([^&]+)/);
-            return match ? match[1] : null; // Extract and return the video ID
-        }
-
-        // Event listener for the Enter key
-        youtubeUrlInput.addEventListener('keypress', function(event) {
-            if (event.key === 'Enter') {
-                nextTreatment();
-            }
-        });
     </script>
 </body>
 </html>
