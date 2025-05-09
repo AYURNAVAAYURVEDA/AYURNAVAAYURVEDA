@@ -173,7 +173,7 @@
         }
 
         function extractYouTubeID(url) {
-            const match = url.match(/[?&]v=([^&]+)/) || url.match(/youtu\.be\/([^?]+)/);
+            const match = url.match(/(?:youtube\.com\/(?:.*v=|.*\/|.*\?v=)|youtu\.be\/)([^&]+)/);
             return match ? match[1] : null; // Extract and return the video ID
         }
 
